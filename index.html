@@ -89,6 +89,28 @@
             box-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
         }
 
+        .search-results {
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 2px solid var(--bright);
+            border-radius: 8px;
+            color: var(--bright);
+            font-size: 14px;
+            display: none;
+        }
+
+        .search-results.active {
+            display: block;
+        }
+
+        mark {
+            background-color: #ffeb3b;
+            color: #000;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -227,6 +249,7 @@
 
         <div class="search-container">
             <input type="text" class="search-box" id="searchInput" placeholder="Search tools and categories...">
+            <div class="search-results" id="searchResults"></div>
         </div>
 
         <div class="grid">

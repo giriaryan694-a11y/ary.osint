@@ -97,11 +97,12 @@
             border-radius: 8px;
             color: var(--bright);
             font-size: 14px;
+            min-height: 20px;
             display: none;
         }
 
         .search-results.active {
-            display: block;
+            display: block !important;
         }
 
         mark {
@@ -243,6 +244,36 @@
     </style>
 </head>
 <body>
+    <script>
+        function filterCards() {
+            var input = document.getElementById("mySearch");
+            var filter = input.value.toUpperCase();
+            var cards = document.querySelectorAll(".card");
+            var count = 0;
+            
+            for (var i = 0; i < cards.length; i++) {
+                var text = cards[i].textContent || cards[i].innerText;
+                if (text.toUpperCase().indexOf(filter) > -1) {
+                    cards[i].style.display = "";
+                    if (filter.length > 0) count++;
+                } else {
+                    cards[i].style.display = "none";
+                }
+            }
+            
+            var msg = document.getElementById("resultMsg");
+            if (filter.length === 0) {
+                msg.style.display = "none";
+            } else if (count === 0) {
+                msg.style.display = "block";
+                msg.innerHTML = "# NOT FOUND - No results for '" + filter + "'";
+            } else {
+                msg.style.display = "block";
+                msg.innerHTML = "# Found " + count + " result" + (count > 1 ? "s" : "") + " for '" + filter + "'";
+            }
+        }
+    </script>
+
     <div class="wrap">
         <header>
             <div class="logo">ARY</div>
@@ -254,8 +285,8 @@
         </header>
 
         <div class="search-container">
-            <input type="text" class="search-box" id="searchInput" placeholder="Search tools and categories...">
-            <div class="search-results" id="searchResults"></div>
+            <input type="text" class="search-box" id="mySearch" placeholder="Search tools and categories..." onkeyup="filterCards()">
+            <div class="search-results" id="resultMsg"></div>
         </div>
 
         <div class="grid">

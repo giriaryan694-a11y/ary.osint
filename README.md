@@ -216,7 +216,7 @@ For questions, suggestions, or feedback about ary.osint:
 
 ## 📊 Last Updated
 
-November 2025
+January 2026
 
 ---
 

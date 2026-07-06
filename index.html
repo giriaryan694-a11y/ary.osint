@@ -106,6 +106,16 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        .author a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .author a:hover {
+            color: var(--bright);
+            text-decoration: underline;
+        }
+
         .badge-row {
             display: flex;
             gap: 8px;
@@ -128,16 +138,22 @@
         .search-wrap {
             margin-bottom: 28px;
             position: relative;
+            height: 48px;
+            display: flex;
+            align-items: center;
         }
 
         .search-icon {
             position: absolute;
             left: 16px;
-            top: 50%;
-            transform: translateY(-50%);
+            top: 0;
+            bottom: 0;
+            display: flex;
+            align-items: center;
             color: var(--accent);
             font-size: 16px;
             pointer-events: none;
+            z-index: 2;
         }
 
         .search-box {
@@ -151,6 +167,7 @@
             font-family: 'JetBrains Mono', monospace;
             transition: all 0.3s;
             outline: none;
+            height: 100%;
         }
 
         .search-box:focus {
@@ -341,6 +358,30 @@
         footer p { margin: 0 0 6px; color: var(--muted); font-size: 12px; line-height: 1.7; }
         footer strong { color: var(--yellow); }
 
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .loading::after {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top-color: var(--bright);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         mark {
             background: rgba(255,235,59,0.25);
             color: #ffd95c;
@@ -363,42 +404,190 @@
     </style>
 </head>
 <body>
+
+<div class="wrap">
+
+    <header>
+        <div class="logo">ARY</div>
+        <div>
+            <h1>ary.osint — Toolkit</h1>
+            <div class="author">// Made by <a href="https://github.com/giriaryan694-a11y" target="_blank" rel="noopener">Aryan Giri</a> — Updated July 2026 | <a href="https://github.com/giriaryan694-a11y" target="_blank" rel="noopener">giriaryan694-a11y</a></div>
+            <p class="lead">Comprehensive launcher of OSINT tools, resources &amp; research. Use responsibly — authorized targets only.</p>
+            <div class="badge-row">
+                <span class="hbadge green">✓ Authorized Use Only</span>
+                <span class="hbadge yellow">⚡ <span id="toolCount">220+</span> Tools</span>
+                <span class="hbadge blue">🔄 July 2026</span>
+                <span class="hbadge red">⚠ OPSEC Aware</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input type="text" class="search-box" id="mySearch" placeholder="Search tools, categories, tags...">
+        <div id="resultMsg"></div>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-pill">Categories: <span>10 Main</span></div>
+        <div class="stat-pill">Tools Listed: <span id="statsTools">220+</span></div>
+        <div class="stat-pill">Free Tools: <span>~75%</span></div>
+        <div class="stat-pill">New in 2026: <span>15+ Cards</span></div>
+        <div class="stat-pill">Last Updated: <span>Jul 2026</span></div>
+    </div>
+
+    <main id="content">
+        <div class="loading">Loading OSINT resources</div>
+    </main>
+
+    <footer>
+        <p><strong>⚠️ Responsible Use:</strong> These tools are for lab use and authorized security research only. Do not use against systems or individuals you don't have permission to investigate. Always respect privacy laws, GDPR, and ethical guidelines.</p>
+        <p style="margin-top: 10px; color: #3a5468; font-family: 'JetBrains Mono', monospace; font-size: 11px;">Last updated: July 2026 &nbsp;|&nbsp; Made by Aryan Giri &nbsp;|&nbsp; <a href="https://github.com/giriaryan694-a11y" target="_blank" rel="noopener" style="color: #3a5468; text-decoration: none;">giriaryan694-a11y</a> &nbsp;|&nbsp; ary.osint</p>
+    </footer>
+
+</div>
+
 <script>
+// ═══════════════════ STATE ═══════════════════
+let allData = null;
+
+// ═══════════════════ TAG DISPLAY MAP ═══════════════════
+const tagMap = {
+    free:  { cls: 'free',  label: 'Free' },
+    paid:  { cls: 'paid',  label: 'Paid' },
+    mixed: { cls: 'mixed', label: 'Free/Paid' },
+    tool:  { cls: 'tool',  label: 'Web' },
+    cli:   { cls: 'cli',   label: 'CLI' }
+};
+
+// ═══════════════════ RENDER ═══════════════════
+function renderResources(data) {
+    allData = data;
+    const main = document.getElementById('content');
+    main.innerHTML = '';
+
+    let totalTools = 0;
+
+    data.sections.forEach(section => {
+        // Section label
+        const sectionEl = document.createElement('div');
+        sectionEl.className = 'section-label';
+        sectionEl.textContent = section.title;
+        main.appendChild(sectionEl);
+
+        // Grid
+        const grid = document.createElement('div');
+        grid.className = 'grid';
+
+        section.categories.forEach(cat => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            if (cat.new) card.classList.add('new-card');
+            if (cat.wide) card.classList.add('wide');
+
+            const h3 = document.createElement('h3');
+            h3.textContent = cat.title;
+            card.appendChild(h3);
+
+            if (cat.description) {
+                const p = document.createElement('p');
+                p.textContent = cat.description;
+                card.appendChild(p);
+            }
+
+            const linksDiv = document.createElement('div');
+            linksDiv.className = 'links';
+
+            cat.links.forEach(link => {
+                const a = document.createElement('a');
+                a.className = 'link';
+                a.href = link.url;
+                a.target = '_blank';
+                a.rel = 'noopener';
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = link.name;
+                a.appendChild(nameSpan);
+
+                if (link.description) {
+                    const lbl = document.createElement('span');
+                    lbl.className = 'lbl';
+                    lbl.textContent = link.description;
+                    a.appendChild(lbl);
+                }
+
+                linksDiv.appendChild(a);
+                totalTools++;
+            });
+
+            card.appendChild(linksDiv);
+
+            // Tags
+            if (cat.tags && cat.tags.length > 0) {
+                const tagRow = document.createElement('div');
+                tagRow.className = 'tag-row';
+                cat.tags.forEach(t => {
+                    const info = tagMap[t] || { cls: 'free', label: t };
+                    const span = document.createElement('span');
+                    span.className = `tag ${info.cls}`;
+                    span.textContent = info.label;
+                    tagRow.appendChild(span);
+                });
+                card.appendChild(tagRow);
+            }
+
+            grid.appendChild(card);
+        });
+
+        main.appendChild(grid);
+    });
+
+    // Update tool count
+    const countText = totalTools + '+';
+    document.getElementById('toolCount').textContent = countText;
+    document.getElementById('statsTools').textContent = countText;
+
+    // Re-bind search
+    document.getElementById('mySearch').addEventListener('keyup', filterCards);
+}
+
+// ═══════════════════ SEARCH ═══════════════════
 function filterCards() {
-    var input = document.getElementById("mySearch");
-    var filter = input.value.toUpperCase();
-    var cards = document.querySelectorAll(".card");
-    var sections = document.querySelectorAll(".grid");
-    var labels = document.querySelectorAll(".section-label");
-    
-    var count = 0;
-    for (var i = 0; i < cards.length; i++) {
-        var text = cards[i].textContent || cards[i].innerText;
+    const input = document.getElementById("mySearch");
+    const filter = input.value.toUpperCase().trim();
+    const cards = document.querySelectorAll(".card");
+    const sections = document.querySelectorAll(".grid");
+    const labels = document.querySelectorAll(".section-label");
+
+    let count = 0;
+
+    cards.forEach(card => {
+        const text = card.textContent || card.innerText;
         if (filter === "" || text.toUpperCase().indexOf(filter) > -1) {
-            cards[i].style.display = "";
+            card.style.display = "";
             if (filter !== "") count++;
         } else {
-            cards[i].style.display = "none";
+            card.style.display = "none";
         }
-    }
+    });
 
-    for (var j = 0; j < sections.length; j++) {
-        var visibleCount = 0;
-        var sectionCards = sections[j].querySelectorAll('.card');
-        for (var k = 0; k < sectionCards.length; k++) {
-            if (sectionCards[k].style.display !== "none") visibleCount++;
-        }
-        
+    sections.forEach((section, j) => {
+        const sectionCards = section.querySelectorAll('.card');
+        let visibleCount = 0;
+        sectionCards.forEach(sc => {
+            if (sc.style.display !== "none") visibleCount++;
+        });
+
         if (visibleCount === 0 && filter !== "") {
-            sections[j].style.display = "none";
+            section.style.display = "none";
             if (labels[j]) labels[j].style.display = "none";
         } else {
-            sections[j].style.display = "";
+            section.style.display = "";
             if (labels[j]) labels[j].style.display = "";
         }
-    }
+    });
 
-    var msg = document.getElementById("resultMsg");
+    const msg = document.getElementById("resultMsg");
     if (filter === "") {
         msg.style.display = "none";
     } else if (count === 0) {
@@ -409,574 +598,23 @@ function filterCards() {
         msg.textContent = "# Found " + count + " result" + (count > 1 ? "s" : "") + " for '" + input.value + "'";
     }
 }
+
+// ═══════════════════ INIT ═══════════════════
+document.addEventListener('DOMContentLoaded', () => {
+    fetch('resources.json')
+        .then(res => {
+            if (!res.ok) throw new Error('Failed to load resources.json');
+            return res.json();
+        })
+        .then(data => {
+            renderResources(data);
+        })
+        .catch(err => {
+            console.error(err);
+            document.getElementById('content').innerHTML =
+                '<div class="loading" style="color:var(--red);">⚠ Failed to load resources.json — ' + err.message + '</div>';
+        });
+});
 </script>
-
-<div class="wrap">
-
-    <header>
-        <div class="logo">ARY</div>
-        <div>
-            <h1>ary.osint — Toolkit</h1>
-            <div class="author">// Made by Aryan Giri — Updated July 2026</div>
-            <p class="lead">Comprehensive launcher of OSINT tools, resources &amp; research. Use responsibly — authorized targets only.</p>
-            <div class="badge-row">
-                <span class="hbadge green">✓ Authorized Use Only</span>
-                <span class="hbadge yellow">⚡ 220+ Tools</span>
-                <span class="hbadge blue">🔄 July 2026</span>
-                <span class="hbadge red">⚠ OPSEC Aware</span>
-            </div>
-        </div>
-    </header>
-
-    <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input type="text" class="search-box" id="mySearch" placeholder="Search tools, categories, tags..." onkeyup="filterCards()">
-        <div id="resultMsg"></div>
-    </div>
-
-    <div class="stats-bar">
-        <div class="stat-pill">Categories: <span>10 Main</span></div>
-        <div class="stat-pill">Tools Listed: <span>220+</span></div>
-        <div class="stat-pill">Free Tools: <span>~75%</span></div>
-        <div class="stat-pill">New in 2026: <span>15+ Cards</span></div>
-        <div class="stat-pill">Last Updated: <span>Jul 2026</span></div>
-    </div>
-
-    <!-- ═══════════════════ SECTION: IDENTITY ═══════════════════ -->
-    <div class="section-label">👤 Identity &amp; Social Intelligence</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>👤 Username / Identity</h3>
-            <p>Search usernames across social sites, profiles, and leaks.</p>
-            <div class="links">
-                <a class="link" href="https://github.com/sherlock-project/sherlock" target="_blank">Sherlock<span class="lbl">CLI username search across 400+ sites</span></a>
-                <a class="link" href="https://whatsmyname.app" target="_blank">WhatsMyName.app<span class="lbl">Web-based username enumeration</span></a>
-                <a class="link" href="https://usersearch.ai/" target="_blank">UserSearch.ai</a>
-                <a class="link" href="https://usersearch.org" target="_blank">UserSearch.org</a>
-                <a class="link" href="https://social-searcher.com/" target="_blank">Social-Searcher</a>
-                <a class="link" href="https://xcancel.com/" target="_blank">XCancel (Twitter checks)</a>
-                <a class="link" href="https://github.com/paulpogoda/OSINT-CSE" target="_blank">OSINT-CSE</a>
-                <a class="link" href="https://epieos.com/" target="_blank">Epieos (OSINT Tool)</a>
-                <a class="link" href="https://checkusernames.com/" target="_blank">CheckUsernames<span class="lbl">Quickly check username across 160+ social networks</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag cli">CLI</span><span class="tag tool">Web</span></div>
-        </div>
-
-        <div class="card">
-            <h3>📱 Phone Number Lookup</h3>
-            <p>Reverse phone lookup, carrier/region info, related leaks.</p>
-            <div class="links">
-                <a class="link" href="https://whocalld.com" target="_blank">Whocalld<span class="lbl">Crowdsourced phone intel & spam reporting</span></a>
-                <a class="link" href="https://www.numlookup.com/" target="_blank">Numlookup (web)</a>
-                <a class="link" href="https://www.truecaller.com/" target="_blank">Truecaller (web)</a>
-                <a class="link" href="https://www.idcrawl.com/" target="_blank">IDCrawl</a>
-                <a class="link" href="https://ppl.contact/" target="_blank">PPL.contact</a>
-                <a class="link" href="https://github.com/sundowndev/PhoneInfoga" target="_blank">PhoneInfoga<span class="lbl">Advanced info gathering via phone numbers</span></a>
-                <a class="link" href="https://www.truepeoplesearch.com/" target="_blank">TruePeopleSearch</a>
-                <a class="link" href="https://callersmart.com" target="_blank">CallerSmart<span class="lbl">Community-based caller ID &amp; spam detection</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">Web</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🔎 People Search &amp; Background Check</h3>
-            <p>US people search, public records, background checks, address lookup.</p>
-            <div class="links">
-                <a class="link" href="http://www.usa.com/" target="_blank">USA.com (US People Search)</a>
-                <a class="link" href="https://www.whitepages.com/" target="_blank">WhitePages</a>
-                <a class="link" href="https://www.peekyou.com/" target="_blank">PeekYou</a>
-                <a class="link" href="https://www.spokeo.com/" target="_blank">Spokeo</a>
-                <a class="link" href="https://www.infotracer.com/" target="_blank">InfoTracer</a>
-                <a class="link" href="https://www.searchbug.com/" target="_blank">SearchBug</a>
-                <a class="link" href="https://www.socialcatfish.com/" target="_blank">SocialCatfish</a>
-                <a class="link" href="https://xraycontact.com" target="_blank">X-Ray Contact<span class="lbl">Profile from email/phone/username/image</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">US-Focused</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🕵️ Identity Investigation Platforms</h3>
-            <p>Full-cycle platforms that map digital identities from multiple data sources.</p>
-            <div class="links">
-                <a class="link" href="https://maltego.com/" target="_blank">Maltego<span class="lbl">Visual link analysis &amp; relationship mapping</span></a>
-                <a class="link" href="https://spiderfoot.net/" target="_blank">SpiderFoot<span class="lbl">Automated OSINT across 100+ sources</span></a>
-                <a class="link" href="https://www.lampyre.io/" target="_blank">Lampyre<span class="lbl">Real-time intelligence from diverse sources</span></a>
-                <a class="link" href="https://osint.industries" target="_blank">OSINT Industries<span class="lbl">Multi-source identity profiling</span></a>
-                <a class="link" href="https://irbis.espysys.com/" target="_blank">IRBIS Pro OSINT Profiler<span class="lbl">Dark web + social media profiling</span></a>
-                <a class="link" href="https://dehashed.com/" target="_blank">DeHashed<span class="lbl">Billion-record breach search engine</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">Platforms</span></div>
-        </div>
-
-        <div class="card">
-            <h3>📸 Instagram SOCMINT</h3>
-            <p>Bookmarklet &amp; tools to reveal dates, timestamps, and metadata for Instagram.</p>
-            <div class="links">
-                <a class="link" href="https://tools.myosint.training" target="_blank">Instagram Date Reveal Bookmarklet</a>
-                <a class="link" href="https://blog.myosint.training" target="_blank">Details &amp; instructions</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">SOCMINT</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: NETWORK / HOST ═══════════════════ -->
-    <div class="section-label">🌐 Network, IP &amp; Domain Intelligence</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>🌐 IP / Host Lookup</h3>
-            <p>IP reputation, ASN, geolocation, exposed services, vulnerability data, whois lookup.</p>
-            <div class="links">
-                <a class="link" href="https://www.shodan.io/" target="_blank">Shodan<span class="lbl">Search engine for internet-connected devices</span></a>
-                <a class="link" href="https://cvedb.shodan.io" target="_blank">CVE DB Shodan</a>
-                <a class="link" href="https://internetdb.shodan.io" target="_blank">InternetDB Shodan</a>
-                <a class="link" href="https://censys.io/" target="_blank">Censys<span class="lbl">Internet intelligence &amp; attack surface mgmt</span></a>
-                <a class="link" href="https://www.criminalip.io/" target="_blank">CriminalIP</a>
-                <a class="link" href="https://leakix.net/" target="_blank">LeakIX</a>
-                <a class="link" href="https://www.abuseipdb.com/" target="_blank">AbuseIPDB</a>
-                <a class="link" href="https://en.fofa.info/" target="_blank">FOFA (IP &amp; Host Search)</a>
-                <a class="link" href="https://www.yougetsignal.com/" target="_blank">YouGetSignal (Network Tools)</a>
-                <a class="link" href="https://iplocation.io/" target="_blank">IPLocation.io</a>
-                <a class="link" href="https://ipinfo.io/" target="_blank">IPinfo.io (IP Geolocation)</a>
-                <a class="link" href="https://www.maxmind.com/" target="_blank">MaxMind GeoIP</a>
-                <a class="link" href="https://www.arin.net/" target="_blank">ARIN (North America IP Registry)</a>
-                <a class="link" href="https://www.ipqualityscore.com/ip-reputation-check" target="_blank">IPQualityScore</a>
-                <a class="link" href="https://check.spamhaus.org/" target="_blank">Spamhaus Reputation</a>
-                <a class="link" href="https://whatismyipaddress.com/" target="_blank">WhatIsMyIPAddress</a>
-                <a class="link" href="https://2ip.io/abuse/" target="_blank">2IP.io Abuse</a>
-                <a class="link" href="https://urlscan.io/" target="_blank">URLScan.io<span class="lbl">Safely sandbox &amp; inspect suspicious URLs</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Freemium</span><span class="tag tool">Web API</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🔗 Domain / DNS</h3>
-            <p>Whois, passive DNS, subdomain discovery, historical content, reverse DNS.</p>
-            <div class="links">
-                <a class="link" href="https://who.is" target="_blank">who.is (whois)</a>
-                <a class="link" href="https://lookup.icann.org/en" target="_blank">ICANN WHOIS</a>
-                <a class="link" href="https://www.whois.com/whois/" target="_blank">WHOIS.com</a>
-                <a class="link" href="https://mxtoolbox.com/whois.aspx" target="_blank">MXToolbox WHOIS</a>
-                <a class="link" href="https://sitereport.netcraft.com/" target="_blank">Netcraft Site Report</a>
-                <a class="link" href="https://searchdns.netcraft.com/" target="_blank">Netcraft Search DNS</a>
-                <a class="link" href="https://domainhunter.pro/" target="_blank">DomainHunter.pro</a>
-                <a class="link" href="https://github.com/OWASP/Amass" target="_blank">Amass (subdomain)</a>
-                <a class="link" href="https://archive.org/web/" target="_blank">Wayback Machine</a>
-                <a class="link" href="https://pagecached.com/" target="_blank">PageCached</a>
-                <a class="link" href="https://dnslytics.com/" target="_blank">DNSlytics</a>
-                <a class="link" href="https://www.nslookup.io/" target="_blank">NSLookup.io</a>
-                <a class="link" href="https://hackertarget.com/reverse-ip-lookup/" target="_blank">HackerTarget Reverse IP</a>
-                <a class="link" href="https://viewdns.info/reverseip/" target="_blank">ViewDNS Reverse IP</a>
-                <a class="link" href="https://dnschecker.org/reverse-dns.php" target="_blank">DNSChecker Reverse</a>
-                <a class="link" href="https://ip.thc.org/" target="_blank">ip.thc.org (rDNS, Subdomain, CNAME)</a>
-                <a class="link" href="https://dnsdumpster.com/" target="_blank">DNSDumpster<span class="lbl">Domain recon &amp; DNS mapping</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Web</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🌐 Recon &amp; Vulnerability Intelligence</h3>
-            <p>Subdomain discovery, CVE scanning, JS analysis and exploit sandboxing.</p>
-            <div class="links">
-                <a class="link" href="https://trinetlayer.com" target="_blank">TrinetLayer<span class="lbl">Attack surface suite (GhostJS secret scanning)</span></a>
-                <a class="link" href="https://github.com/laramies/theHarvester" target="_blank">theHarvester<span class="lbl">Emails, subdomains &amp; IPs from public sources</span></a>
-                <a class="link" href="https://github.com/lanmaster53/recon-ng" target="_blank">Recon-ng<span class="lbl">Web recon framework with modular design</span></a>
-                <a class="link" href="https://www.virustotal.com/gui/home/search" target="_blank">VirusTotal<span class="lbl">Scan URLs, domains, files &amp; IPs</span></a>
-                <a class="link" href="https://www.wappalyzer.com/" target="_blank">Wappalyzer<span class="lbl">Technology fingerprinting</span></a>
-                <a class="link" href="https://builtwith.com/" target="_blank">BuiltWith<span class="lbl">Website technology profiler</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag cli">CLI</span><span class="tag tool">BugBounty</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: EMAIL ═══════════════════ -->
-    <div class="section-label">✉️ Email, Breach &amp; Data Leaks</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>✉️ Email OSINT</h3>
-            <p>Email discovery, breach search, account enumeration, reputation checking.</p>
-            <div class="links">
-                <a class="link" href="https://leadleap.net/email-validator" target="_blank">LeadLeap Email Validator<span class="lbl">Multi-layer SMTP/DMARC verification</span></a>
-                <a class="link" href="https://hunter.io/" target="_blank">Hunter.io</a>
-                <a class="link" href="https://github.com/megadose/holehe" target="_blank">Holehe</a>
-                <a class="link" href="https://haveibeenpwned.com/" target="_blank">Have I Been Pwned</a>
-                <a class="link" href="https://breach.directory/" target="_blank">Breach Directory</a>
-                <a class="link" href="https://emailrep.io/" target="_blank">EmailRep.io</a>
-                <a class="link" href="https://www.apivoid.com/tools/email-reputation-check/" target="_blank">APIVoid Email Check</a>
-                <a class="link" href="https://greip.io/tools/Email-Scoring" target="_blank">Greip Email Scoring</a>
-                <a class="link" href="https://xposedornot.com/" target="_blank">XposedOrNot<span class="lbl">Free &amp; privacy-focused breach check</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">Web</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🧨 Data Leak Intelligence</h3>
-            <p>Curated leak search, breach snapshots, and specialized leak platforms.</p>
-            <div class="links">
-                <a class="link" href="https://osint.link/#leak" target="_blank">OSINT Leak Search</a>
-                <a class="link" href="https://www.intelligencesecurity.io" target="_blank">Intelligence Security<span class="lbl">Breach &amp; domain insights</span></a>
-                <a class="link" href="https://www.osint.industries" target="_blank">OSINT Industries</a>
-                <a class="link" href="https://dehashed.com/" target="_blank">DeHashed<span class="lbl">Billions of leaked records searchable</span></a>
-                <a class="link" href="https://intelx.io/" target="_blank">Intelligence X<span class="lbl">Dark web &amp; breach archive search</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Freemium</span><span class="tag tool">Breach</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🌑 Dark Web Monitoring</h3>
-            <p>Darknet intelligence, credential monitoring, and Tor-indexed sources.</p>
-            <div class="links">
-                <a class="link" href="https://www.darkowl.com/" target="_blank">DarkOwl<span class="lbl">Indexes Tor, I2P, IRC &amp; hacking forums</span></a>
-                <a class="link" href="https://intelx.io/" target="_blank">Intelligence X</a>
-                <a class="link" href="https://www.recordedfuture.com/" target="_blank">Recorded Future<span class="lbl">AI-powered threat intel &amp; dark web feeds</span></a>
-                <a class="link" href="https://github.com/MihaelaTartarea/IVRE" target="_blank">IVRE<span class="lbl">Network recon framework</span></a>
-            </div>
-            <div class="tag-row"><span class="tag paid">Paid</span><span class="tag tool">Threat Intel</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: MEDIA / IMAGE ═══════════════════ -->
-    <div class="section-label">🖼️ Media, Image &amp; Video Intelligence</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>🖼️ Image &amp; Video OSINT</h3>
-            <p>Reverse search, frame analysis, verification, visual origin detection.</p>
-            <div class="links">
-                <a class="link" href="https://images.google.com/" target="_blank">Google Images</a>
-                <a class="link" href="https://tineye.com/" target="_blank">TinEye (Reverse Image)</a>
-                <a class="link" href="https://www.invid-project.eu/tools-and-support/" target="_blank">InVID / WeVerify</a>
-                <a class="link" href="https://lenso.ai/en" target="_blank">Lenso.ai</a>
-                <a class="link" href="https://www.reversely.ai/" target="_blank">Reversely.ai</a>
-                <a class="link" href="https://imagewhisperer.org/" target="_blank">ImageWhisperer</a>
-                <a class="link" href="https://whentaken.com/" target="_blank">WhenTaken (timestamps)</a>
-                <a class="link" href="https://visualorigins.digitaldigging.org" target="_blank">Visual Origins Detector</a>
-                <a class="link" href="https://www.whereisthisphoto.com/" target="_blank">WhereIsThisPhoto</a>
-                <a class="link" href="https://copychecker.com/ai-reverse-image-search" target="_blank">AI Reverse Image Search</a>
-                <a class="link" href="https://videosearch.io" target="_blank">VideoSearch.io<span class="lbl">Multi-platform video discovery</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Web</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🤖 Face Recognition &amp; Geolocation</h3>
-            <p>Face search, AI geolocation, and photo timestamp estimation.</p>
-            <div class="links">
-                <a class="link" href="https://pimeyes.com/en" target="_blank">PimEyes<span class="lbl">Face recognition search engine</span></a>
-                <a class="link" href="https://facecheck.id/" target="_blank">FaceCheck.id (Face Search)</a>
-                <a class="link" href="https://huggingface.co/spaces/AceXRoux/GeoVLM" target="_blank">GeoVLM (AI Geolocation)</a>
-                <a class="link" href="https://placespotter.com" target="_blank">PlaceSpotter<span class="lbl">AI photo geolocation — 3 free/month</span></a>
-                <a class="link" href="https://lostmediawiki.com" target="_blank">Lost Media Wiki</a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">GEOINT</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🎭 Deepfake Detector</h3>
-            <p>Detect AI-generated deepfakes and synthetic media.</p>
-            <div class="links">
-                <a class="link" href="https://build.nvidia.com/nvidia/synthetic-video-detector?utm_source=giriaryan694-a11y.github.io/ary.osint" target="_blank">NVIDIA Synthetic Video Detector NIM</a>
-                <a class="link" href="https://scanner.deepware.ai/" target="_blank">Deepware Scanner</a>
-                <a class="link" href="https://sensity.ai/" target="_blank">Sensity AI</a>
-                <a class="link" href="https://www.realitydefender.com/" target="_blank">Reality Defender</a>
-                <a class="link" href="https://deepmind.google/science/synthid/" target="_blank">Google SynthID</a>
-                <a class="link" href="https://www.hivemoderation.com/deepfake-detection" target="_blank">Hive Moderation<span class="lbl">API-based deepfake &amp; AI content detection</span></a>
-                <a class="link" href="https://build.nvidia.com/moonshotai/kimi-k2.6" target="_blank">kimi2.6 (it can also detect deepfake but not much powerful)</a>
-                <a class="link" href="https://vastav.ekoahamdutivnasti.com/" target="_blank">Vastav Deepfake Detector</a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">Detection</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🔬 Media Forensics</h3>
-            <p>Verify authenticity and detect tampering in images/videos.</p>
-            <div class="links">
-                <a class="link" href="https://29a.ch/photo-forensics/" target="_blank">Forensically</a>
-                <a class="link" href="https://fotoforensics.com/" target="_blank">FotoForensics</a>
-                <a class="link" href="https://www.fakeimagedetector.com/" target="_blank">Fake Image Detector</a>
-                <a class="link" href="https://ambervideo.co/" target="_blank">Amber Video</a>
-                <a class="link" href="https://www.truepic.com/" target="_blank">Truepic</a>
-                <a class="link" href="https://serelay.com/" target="_blank">Serelay</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Forensics</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: FILES / METADATA / DORKING ═══════════════════ -->
-    <div class="section-label">📄 Files, Metadata &amp; Open Directories</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>📄 Metadata &amp; Files</h3>
-            <p>Extract EXIF, document metadata, embedded paths, file analysis.</p>
-            <div class="links">
-                <a class="link" href="https://giriaryan694-a11y.github.io/MetaLyzer/" target="_blank">MetaLyzer<span class="lbl">Client-side EXIF/XMP/IPTC extractor</span></a>
-                <a class="link" href="https://exiftool.org/" target="_blank">ExifTool</a>
-                <a class="link" href="https://github.com/laramies/metagoofil" target="_blank">Metagoofil</a>
-                <a class="link" href="https://greylensresearch.github.io/filephish/" target="_blank">FilePhish</a>
-                <a class="link" href="https://filesec.io/" target="_blank">FileSec</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag cli">CLI/Web</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🔍 Google Dorking &amp; Research</h3>
-            <p>Advanced search techniques, exposed data discovery, dork generators.</p>
-            <div class="links">
-                <a class="link" href="https://dorkiq.triada.in/" target="_blank">DorkIQ (Dork Generator)</a>
-                <a class="link" href="https://dorkgpt.com" target="_blank">DorkGPT<span class="lbl">AI-powered dork generator</span></a>
-                <a class="link" href="https://dorksearch.com" target="_blank">Dork Search Pro<span class="lbl">Advanced dork search interface</span></a>
-                <a class="link" href="https://gitlab.com/cyb_detective/Dorks-collections-list" target="_blank">Dorks collections (cyb_detective)</a>
-                <a class="link" href="https://gitlab.com/cyb_detective/Advanced-search-operators-list" target="_blank">Advanced search operators list</a>
-                <a class="link" href="https://dorks.xen00rw.me/" target="_blank">Dorks (xen00rw)</a>
-                <a class="link" href="https://github.com/projectdiscovery/awesome-search-queries" target="_blank">Awesome search queries (ProjectDiscovery)</a>
-                <a class="link" href="https://hackers-arise.com/google-dorking-discovering-exposed-obsidian-vaults/" target="_blank">📰 Article: Exposed Obsidian Vaults</a>
-                <a class="link" href="https://hackers-arise.com/osint-finding-surveillance-cameras-with-overpass-turbo/" target="_blank">📰 Finding Surveillance Cameras</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Dorking</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🧠 Search Intelligence</h3>
-            <p>AI-powered query builders, advanced search engines, and OSINT browsers.</p>
-            <div class="links">
-                <a class="link" href="https://dorkgpt.com" target="_blank">DorkGPT — AI dork generator</a>
-                <a class="link" href="https://dorksearch.com" target="_blank">Dork Search Pro</a>
-                <a class="link" href="https://kagi.com" target="_blank">Kagi Browser<span class="lbl">Privacy-focused search engine</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Tooling</span><span class="tag tool">Search</span></div>
-        </div>
-
-        <div class="card new-card">
-            <h3>☁️ Cloud &amp; Open Directory Discovery</h3>
-            <p>Indexed cloud &amp; open directory file search engines.</p>
-            <div class="links">
-                <a class="link" href="https://meawfy.com" target="_blank">MEAWFY<span class="lbl">Advanced Mega.nz file search &amp; indexing</span></a>
-                <a class="link" href="https://odcrawler.com" target="_blank">OD Crawler<span class="lbl">Open directory intelligence</span></a>
-                <a class="link" href="https://filepursuit.com/" target="_blank">FilePursuit<span class="lbl">File search across the web</span></a>
-                <a class="link" href="https://www.dedigger.com" target="_blank">DeDigger<span class="lbl">Find public files in Google Drive</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">File Discovery</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: GEOSPATIAL & MONITORING ═══════════════════ -->
-    <div class="section-label">🗺️ Geospatial, Maps &amp; Global Monitoring</div>
-    <div class="grid">
-
-        <div class="card new-card">
-            <h3>🌍 Global Monitoring &amp; Conflict Tracking</h3>
-            <p>Real-time world maps of conflicts, disasters, political &amp; economic events.</p>
-            <div class="links">
-                <a class="link" href="https://monitor-the-situation.com" target="_blank">Monitor The Situation<span class="lbl">Real-time situation awareness map</span></a>
-                <a class="link" href="https://worldwatch.uk" target="_blank">WorldWatch UK<span class="lbl">Geopolitical &amp; security news feeds</span></a>
-                <a class="link" href="https://www.acleddata.com/" target="_blank">ACLED<span class="lbl">Armed Conflict Location &amp; Event Data</span></a>
-                <a class="link" href="https://liveuamap.com/" target="_blank">LiveUAMap<span class="lbl">Live conflict &amp; event mapping</span></a>
-                <a class="link" href="https://war-tracker.com" target="_blank">War-Tracker<span class="lbl">Live conflict map with geolocated events</span></a>
-                <a class="link" href="https://irwatch.org" target="_blank">IRWatch<span class="lbl">Real-time Iran conflict intelligence dashboard</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Monitoring</span></div>
-        </div>
-
-        <div class="card">
-            <h3>📡 Satellite &amp; Geospatial Tools</h3>
-            <p>Satellite imagery, terrain analysis, and location verification.</p>
-            <div class="links">
-                <a class="link" href="https://www.google.com/maps" target="_blank">Google Maps / Street View</a>
-                <a class="link" href="https://www.bing.com/maps" target="_blank">Bing Maps (Birds Eye)</a>
-                <a class="link" href="https://zoom.earth/" target="_blank">Zoom.EARTH<span class="lbl">Near real-time satellite imagery</span></a>
-                <a class="link" href="https://livingatlas.arcgis.com/wayback/" target="_blank">ArcGIS Wayback<span class="lbl">Historical satellite imagery comparison</span></a>
-                <a class="link" href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo<span class="lbl">OpenStreetMap advanced queries</span></a>
-                <a class="link" href="https://www.suncalc.org/" target="_blank">SunCalc<span class="lbl">Shadow &amp; sun position for timestamp verification</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">GEOINT</span></div>
-        </div>
-
-        <div class="card">
-            <h3>✈️ Transport &amp; Vessel Tracking</h3>
-            <p>Aircraft, ship, and vehicle tracking via ADS-B, AIS, and public data.</p>
-            <div class="links">
-                <a class="link" href="https://www.flightradar24.com/" target="_blank">Flightradar24<span class="lbl">Real-time aircraft tracking</span></a>
-                <a class="link" href="https://adsbexchange.com/" target="_blank">ADS-B Exchange<span class="lbl">Unfiltered aircraft tracking</span></a>
-                <a class="link" href="https://www.marinetraffic.com/" target="_blank">MarineTraffic<span class="lbl">Real-time vessel tracking</span></a>
-                <a class="link" href="https://www.vesselfinder.com/" target="_blank">VesselFinder</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Transport</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: FINANCIAL / CORPORATE ═══════════════════ -->
-    <div class="section-label">💰 Financial, Crypto &amp; Corporate Intelligence</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>🔗 Blockchain &amp; Crypto Tracing</h3>
-            <p>Trace wallet transactions, monitor blockchain activity, link analysis.</p>
-            <div class="links">
-                <a class="link" href="https://www.blockchain.com/explorer" target="_blank">Blockchain Explorer (BTC)</a>
-                <a class="link" href="https://etherscan.io/" target="_blank">Etherscan<span class="lbl">Ethereum blockchain explorer</span></a>
-                <a class="link" href="https://www.breadcrumbs.app/" target="_blank">Breadcrumbs<span class="lbl">Free crypto wallet tracing &amp; graph tool</span></a>
-                <a class="link" href="https://osint.intelligenceonchain.com" target="_blank">IntelligenceOnChain Toolkit<span class="lbl">OSINT + blockchain investigation</span></a>
-                <a class="link" href="https://www.chainalysis.com/" target="_blank">Chainalysis (Reactor)<span class="lbl">Professional-grade crypto forensics</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">Crypto</span></div>
-        </div>
-
-        <div class="card new-card">
-            <h3>🏢 Corporate &amp; Company Intelligence</h3>
-            <p>Company filings, directors, beneficial ownership, SEC &amp; registry data.</p>
-            <div class="links">
-                <a class="link" href="https://leadleap.net" target="_blank">LeadLeap Contact Search<span class="lbl">B2B contact discovery &amp; signals</span></a>
-                <a class="link" href="https://leadleap.net/opendata" target="_blank">LeadLeap Open Data<span class="lbl">Aggregated public registry records</span></a>
-                <a class="link" href="https://opencorporates.com/" target="_blank">OpenCorporates<span class="lbl">Largest open company database</span></a>
-                <a class="link" href="https://www.sec.gov/cgi-bin/browse-edgar" target="_blank">SEC EDGAR<span class="lbl">US company filings &amp; disclosures</span></a>
-                <a class="link" href="https://www.companieshouse.gov.uk/" target="_blank">Companies House (UK)</a>
-                <a class="link" href="https://offshoreleaks.icij.org/" target="_blank">ICIJ Offshore Leaks DB<span class="lbl">Panama Papers, Pandora Papers data</span></a>
-                <a class="link" href="https://www.northdata.de/" target="_blank">NorthData<span class="lbl">European company data &amp; filings</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Corporate</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: PUBLIC RECORDS & LEGAL ═══════════════════ -->
-    <div class="section-label">🧾 Public Records, Archives &amp; Legal</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>🧾 Public Records &amp; Archives</h3>
-            <p>Historical newspapers, court records, public databases.</p>
-            <div class="links">
-                <a class="link" href="https://www.newspapers.com" target="_blank">Newspapers.com<span class="lbl">Historical newspaper archives</span></a>
-                <a class="link" href="https://www.judyrecords.com" target="_blank">Judy Records<span class="lbl">US public court records</span></a>
-                <a class="link" href="https://www.pacer.gov/" target="_blank">PACER<span class="lbl">US Federal court records</span></a>
-                <a class="link" href="https://chroniclingamerica.loc.gov/" target="_blank">Library of Congress Newspapers</a>
-                <a class="link" href="https://www.familysearch.org/" target="_blank">FamilySearch<span class="lbl">Genealogy &amp; historical records</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Paid/Free</span><span class="tag tool">Archives</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🇮🇳 India Records &amp; Legal Search</h3>
-            <p>Indian court search, citation search, nominal record lookup.</p>
-            <div class="links">
-                <a class="link" href="https://aironline.in" target="_blank">All India Reporter Online</a>
-                <a class="link" href="https://ecourts.gov.in/" target="_blank">eCourts India<span class="lbl">District &amp; high court case search</span></a>
-                <a class="link" href="https://indiankanoon.org/" target="_blank">Indian Kanoon<span class="lbl">Free Indian legal case database</span></a>
-                <a class="link" href="https://www.mca.gov.in/" target="_blank">MCA India<span class="lbl">Ministry of Corporate Affairs filings</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Partly Free</span><span class="tag tool">India</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🗂️ Government &amp; Open Data</h3>
-            <p>Government portals, FOIA, open datasets, and transparency portals.</p>
-            <div class="links">
-                <a class="link" href="https://data.gov/" target="_blank">Data.gov (US Open Data)</a>
-                <a class="link" href="https://www.data.gov.uk/" target="_blank">Data.gov.uk</a>
-                <a class="link" href="https://muckrock.com/" target="_blank">MuckRock<span class="lbl">FOIA request tracking &amp; document library</span></a>
-                <a class="link" href="https://www.documentcloud.org/" target="_blank">DocumentCloud<span class="lbl">Journalist-curated document repository</span></a>
-                <a class="link" href="https://wikileaks.org/" target="_blank">WikiLeaks</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Gov Data</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: BUG BOUNTY / SECURITY RESEARCH ═══════════════════ -->
-    <div class="section-label">🛡️ Bug Bounty &amp; Security Research</div>
-    <div class="grid">
-
-        <div class="card new-card">
-            <h3>🐛 Bug Bounty &amp; Exploit Research</h3>
-            <p>Platforms for vulnerability disclosure, exploit databases, and community scam reporting.</p>
-            <div class="links">
-                <a class="link" href="https://bugbountyscam.com/" target="_blank">BugBountyScam<span class="lbl">Expose fraudulent & unfair bug bounty programs</span></a>
-                <a class="link" href="https://www.exploit-db.com/" target="_blank">Exploit-DB<span class="lbl">Public exploits & penetration testing resources</span></a>
-                <a class="link" href="https://nvd.nist.gov/" target="_blank">NVD (National Vulnerability Database)</a>
-                <a class="link" href="https://hackerone.com/directory" target="_blank">HackerOne Directory<span class="lbl">Bug bounty programs & vulnerability disclosure</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">BugBounty</span></div>
-        </div>
-
-    </div>
-
-    <!-- ═══════════════════ SECTION: FRAMEWORKS & DIRECTORIES ═══════════════════ -->
-    <div class="section-label">🧰 Frameworks, Directories &amp; Collections</div>
-    <div class="grid">
-
-        <div class="card">
-            <h3>🧰 OSINT Directories</h3>
-            <p>Curated tool directories, tags, reviews and country-specific resources.</p>
-            <div class="links">
-                <a class="link" href="https://osinttools.io" target="_blank">OSINTTools.io</a>
-                <a class="link" href="https://map.wddadk.com" target="_blank">OSINT-for-Countries Map</a>
-                <a class="link" href="https://osintframework.com/" target="_blank">OSINT Framework<span class="lbl">Structured free-tool directory</span></a>
-                <a class="link" href="https://start.me/p/7kDabv/osint-international" target="_blank">Start.me OSINT International</a>
-                <a class="link" href="https://start.me/p/lLaoXv/07-world" target="_blank">Start.me 07 World</a>
-                <a class="link" href="https://pikaosint.pages.dev/" target="_blank">PikaOSINT</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Directory</span></div>
-        </div>
-
-        <div class="card">
-            <h3>🔗 Investigation Frameworks</h3>
-            <p>Structured toolkits for blockchain, dorking, geolocation investigations.</p>
-            <div class="links">
-                <a class="link" href="https://ubikron.com" target="_blank">Ubikron<span class="lbl">Browser-based OSINT investigation workbench</span></a>
-                <a class="link" href="https://osint.intelligenceonchain.com" target="_blank">IntelligenceOnChain Toolkit</a>
-                <a class="link" href="https://hunchly.com/" target="_blank">Hunchly<span class="lbl">Auto-captures &amp; logs OSINT research sessions</span></a>
-                <a class="link" href="https://www.skopenow.com/" target="_blank">Skopenow<span class="lbl">Automated person/company investigations</span></a>
-                <a class="link" href="https://github.com/intelowlproject/IntelOwl" target="_blank">Intel Owl<span class="lbl">Open-source threat intel aggregator</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Framework</span></div>
-        </div>
-
-        <div class="card wide">
-            <h3>📚 Awesome Collections &amp; Research</h3>
-            <p>Community curated lists, specialized toolboxes, and comprehensive OSINT resources.</p>
-            <div class="links">
-                <a class="link" href="https://github.com/ubikron/Awesome-AI-OSINT" target="_blank">Awesome AI-OSINT (ubikron)</a>
-                <a class="link" href="https://github.com/Buddhsen-tripathi/OSINT-Kit" target="_blank">OSINT-Kit (Buddhsen-tripathi)</a>
-                <a class="link" href="https://github.com/ubikron/Advanced-Enrichments" target="_blank">Advanced-Enrichments (ubikron)</a>
-                <a class="link" href="https://github.com/paulpogoda/OSINT-Tools-North-Korea" target="_blank">OSINT Tools — North Korea</a>
-                <a class="link" href="https://github.com/wddadk/OSINT-for-countries" target="_blank">OSINT for Countries</a>
-                <a class="link" href="https://github.com/paulpogoda/OSINT-for-countries-V2.0" target="_blank">OSINT for Countries V2.0</a>
-                <a class="link" href="https://github.com/Anadema/OSINT-HUB-FR" target="_blank">OSINT HUB FR</a>
-                <a class="link" href="https://github.com/LetsDefend/awesome-soc-analyst" target="_blank">Awesome SOC Analyst</a>
-                <a class="link" href="https://github.com/shramos/Awesome-Cybersecurity-Datasets" target="_blank">Awesome Cybersecurity Datasets</a>
-                <a class="link" href="https://github.com/malleVF/Threat-Research-with-Obsidian-for-SOC-Analysts" target="_blank">Threat Research with Obsidian</a>
-                <a class="link" href="https://github.com/passthesh3ll/The-Pika-s-OSINT-ToolBox" target="_blank">The Pika's OSINT Toolbox</a>
-                <a class="link" href="https://unishka.com/osint-world-series/" target="_blank">Unishka OSINT World Series</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag cli">GitHub</span></div>
-        </div>
-
-        <div class="card new-card">
-            <h3>🎭 Community &amp; Threat Intel</h3>
-            <p>Free intelligence tools, threat research community, and tip lines for suspicious activity.</p>
-            <div class="links">
-                <a class="link" href="https://osintcabal.org" target="_blank">OSINT Cabal<span class="lbl">Counter-extremism research & tip line</span></a>
-                <a class="link" href="https://unishka.substack.com" target="_blank">UNISHKA’s Substack<span class="lbl">Country-specific OSINT toolkits</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Community</span></div>
-        </div>
-
-    </div>
-
-    <footer>
-        <p><strong>⚠️ Responsible Use:</strong> These tools are for lab use and authorized security research only. Do not use against systems or individuals you don't have permission to investigate. Always respect privacy laws, GDPR, and ethical guidelines.</p>
-        <p style="margin-top: 10px; color: #3a5468; font-family: 'JetBrains Mono', monospace; font-size: 11px;">Last updated: July 2026 &nbsp;|&nbsp; Made by Aryan Giri &nbsp;|&nbsp; ary.osint</p>
-    </footer>
-
-</div>
 </body>
 </html>

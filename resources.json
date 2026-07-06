@@ -355,6 +355,23 @@
             {"name": "MarineTraffic", "url": "https://www.marinetraffic.com/", "description": "Real-time vessel tracking"},
             {"name": "VesselFinder", "url": "https://www.vesselfinder.com/"}
           ]
+        },
+        {
+          "title": "📹 Live Camera & Webcam Intelligence",
+          "description": "Access publicly available live webcam feeds for situational awareness, location verification, and real-time monitoring.",
+          "tags": ["free", "tool"],
+          "new": true,
+          "links": [
+            {"name": "VolveVision", "url": "https://volvevision.com/en", "description": "Global webcam network with live feeds"},
+            {"name": "CamScape", "url": "https://www.camscape.com/", "description": "Live webcam directory worldwide"},
+            {"name": "GeoWebcams", "url": "https://www.geowebcams.com/", "description": "Geographically organized webcam feeds"},
+            {"name": "OpenWebcamDB", "url": "https://openwebcamdb.com/", "description": "Open database of public webcams"},
+            {"name": "WebcamLivestream", "url": "https://webcamlivestream.com/", "description": "Live streaming webcam aggregator"},
+            {"name": "LiveCamAtlas", "url": "https://livecamatlas.org/", "description": "Interactive atlas of live cameras"},
+            {"name": "NAOCam", "url": "https://www.naocam.com/", "description": "North American outdoor camera network"},
+            {"name": "LiveWorldWebcams", "url": "https://liveworldwebcams.com/", "description": "Global live webcam collection"},
+            {"name": "Pictimo", "url": "https://www.pictimo.com/", "description": "High-quality webcam feeds worldwide"}
+          ]
         }
       ]
     },

@@ -33,7 +33,6 @@
             scroll-behavior: smooth;
         }
 
-        /* Subtle grid bg */
         body::before {
             content: '';
             position: fixed;
@@ -54,7 +53,6 @@
             z-index: 1;
         }
 
-        /* ── HEADER ── */
         header {
             display: flex;
             align-items: center;
@@ -127,7 +125,6 @@
         .hbadge.red    { border-color: var(--red);    color: var(--red);    background: rgba(255,77,109,0.07); }
         .hbadge.blue   { border-color: var(--accent); color: var(--accent); background: rgba(56,189,248,0.07); }
 
-        /* ── SEARCH ── */
         .search-wrap {
             margin-bottom: 28px;
             position: relative;
@@ -175,7 +172,6 @@
             display: none;
         }
 
-        /* ── STATS BAR ── */
         .stats-bar {
             display: flex;
             gap: 12px;
@@ -198,7 +194,6 @@
             font-weight: 700;
         }
 
-        /* ── SECTION HEADERS ── */
         .section-label {
             font-family: 'JetBrains Mono', monospace;
             font-size: 10px;
@@ -220,14 +215,12 @@
             background: linear-gradient(90deg, var(--border), transparent);
         }
 
-        /* ── GRID ── */
         .grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 14px;
         }
 
-        /* ── CARD ── */
         .card {
             background: var(--panel);
             padding: 18px;
@@ -337,7 +330,6 @@
         .wide { grid-column: span 3; }
         .half { grid-column: span 2; }
 
-        /* ── FOOTER ── */
         footer {
             margin-top: 50px;
             padding: 24px;
@@ -376,25 +368,45 @@ function filterCards() {
     var input = document.getElementById("mySearch");
     var filter = input.value.toUpperCase();
     var cards = document.querySelectorAll(".card");
+    var sections = document.querySelectorAll(".grid");
+    var labels = document.querySelectorAll(".section-label");
+    
     var count = 0;
     for (var i = 0; i < cards.length; i++) {
         var text = cards[i].textContent || cards[i].innerText;
-        if (text.toUpperCase().indexOf(filter) > -1) {
+        if (filter === "" || text.toUpperCase().indexOf(filter) > -1) {
             cards[i].style.display = "";
-            if (filter.length > 0) count++;
+            if (filter !== "") count++;
         } else {
             cards[i].style.display = "none";
         }
     }
+
+    for (var j = 0; j < sections.length; j++) {
+        var visibleCount = 0;
+        var sectionCards = sections[j].querySelectorAll('.card');
+        for (var k = 0; k < sectionCards.length; k++) {
+            if (sectionCards[k].style.display !== "none") visibleCount++;
+        }
+        
+        if (visibleCount === 0 && filter !== "") {
+            sections[j].style.display = "none";
+            if (labels[j]) labels[j].style.display = "none";
+        } else {
+            sections[j].style.display = "";
+            if (labels[j]) labels[j].style.display = "";
+        }
+    }
+
     var msg = document.getElementById("resultMsg");
-    if (filter.length === 0) {
+    if (filter === "") {
         msg.style.display = "none";
     } else if (count === 0) {
         msg.style.display = "block";
-        msg.innerHTML = "# NOT FOUND — No results for '" + filter + "'";
+        msg.textContent = "# NOT FOUND — No results for '" + input.value + "'";
     } else {
         msg.style.display = "block";
-        msg.innerHTML = "# Found " + count + " result" + (count > 1 ? "s" : "") + " for '" + filter + "'";
+        msg.textContent = "# Found " + count + " result" + (count > 1 ? "s" : "") + " for '" + input.value + "'";
     }
 }
 </script>
@@ -405,12 +417,12 @@ function filterCards() {
         <div class="logo">ARY</div>
         <div>
             <h1>ary.osint — Toolkit</h1>
-            <div class="author">// Made by Aryan Giri — Updated March 2026</div>
+            <div class="author">// Made by Aryan Giri — Updated July 2026</div>
             <p class="lead">Comprehensive launcher of OSINT tools, resources &amp; research. Use responsibly — authorized targets only.</p>
             <div class="badge-row">
                 <span class="hbadge green">✓ Authorized Use Only</span>
-                <span class="hbadge yellow">⚡ 200+ Tools</span>
-                <span class="hbadge blue">🔄 March 2026</span>
+                <span class="hbadge yellow">⚡ 220+ Tools</span>
+                <span class="hbadge blue">🔄 July 2026</span>
                 <span class="hbadge red">⚠ OPSEC Aware</span>
             </div>
         </div>
@@ -423,11 +435,11 @@ function filterCards() {
     </div>
 
     <div class="stats-bar">
-        <div class="stat-pill">Categories: <span>25+</span></div>
-        <div class="stat-pill">Tools Listed: <span>200+</span></div>
-        <div class="stat-pill">Free Tools: <span>~70%</span></div>
-        <div class="stat-pill">New in 2026: <span>12 Cards</span></div>
-        <div class="stat-pill">Last Updated: <span>Mar 2026</span></div>
+        <div class="stat-pill">Categories: <span>10 Main</span></div>
+        <div class="stat-pill">Tools Listed: <span>220+</span></div>
+        <div class="stat-pill">Free Tools: <span>~75%</span></div>
+        <div class="stat-pill">New in 2026: <span>15+ Cards</span></div>
+        <div class="stat-pill">Last Updated: <span>Jul 2026</span></div>
     </div>
 
     <!-- ═══════════════════ SECTION: IDENTITY ═══════════════════ -->
@@ -455,6 +467,7 @@ function filterCards() {
             <h3>📱 Phone Number Lookup</h3>
             <p>Reverse phone lookup, carrier/region info, related leaks.</p>
             <div class="links">
+                <a class="link" href="https://whocalld.com" target="_blank">Whocalld<span class="lbl">Crowdsourced phone intel & spam reporting</span></a>
                 <a class="link" href="https://www.numlookup.com/" target="_blank">Numlookup (web)</a>
                 <a class="link" href="https://www.truecaller.com/" target="_blank">Truecaller (web)</a>
                 <a class="link" href="https://www.idcrawl.com/" target="_blank">IDCrawl</a>
@@ -482,7 +495,7 @@ function filterCards() {
             <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">US-Focused</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>🕵️ Identity Investigation Platforms</h3>
             <p>Full-cycle platforms that map digital identities from multiple data sources.</p>
             <div class="links">
@@ -496,7 +509,7 @@ function filterCards() {
             <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">Platforms</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>📸 Instagram SOCMINT</h3>
             <p>Bookmarklet &amp; tools to reveal dates, timestamps, and metadata for Instagram.</p>
             <div class="links">
@@ -504,26 +517,6 @@ function filterCards() {
                 <a class="link" href="https://blog.myosint.training" target="_blank">Details &amp; instructions</a>
             </div>
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">SOCMINT</span></div>
-        </div>
-
-        <!-- NEW: LeadLeap Contact Search (B2B contact discovery) -->
-        <div class="card new-card">
-            <h3>📇 LeadLeap Contact Search</h3>
-            <p>B2B contact search with tens of millions of verified business contacts. Search by name, company, job title, industry, location, and more. Returns email addresses, phone numbers, LinkedIn profiles, and company details. Free tier available with account.</p>
-            <div class="links">
-                <a class="link" href="https://leadleap.net" target="_blank">LeadLeap<span class="lbl">AI-driven contact discovery &amp; lead intelligence</span></a>
-            </div>
-            <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag tool">People Search</span></div>
-        </div>
-
-        <!-- NEW: Whocalld - telephone number lookup -->
-        <div class="card new-card">
-            <h3>📞 Whocalld</h3>
-            <p>Telephone number information search for any number worldwide.</p>
-            <div class="links">
-                <a class="link" href="https://whocalld.com" target="_blank">Whocalld<span class="lbl">Search any phone number globally</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Phone</span></div>
         </div>
 
     </div>
@@ -583,11 +576,11 @@ function filterCards() {
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Web</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>🌐 Recon &amp; Vulnerability Intelligence</h3>
             <p>Subdomain discovery, CVE scanning, JS analysis and exploit sandboxing.</p>
             <div class="links">
-                <a class="link" href="https://trinetlayer.com" target="_blank">TrinetLayer<span class="lbl">Recon &amp; vulnerability tools suite</span></a>
+                <a class="link" href="https://trinetlayer.com" target="_blank">TrinetLayer<span class="lbl">Attack surface suite (GhostJS secret scanning)</span></a>
                 <a class="link" href="https://github.com/laramies/theHarvester" target="_blank">theHarvester<span class="lbl">Emails, subdomains &amp; IPs from public sources</span></a>
                 <a class="link" href="https://github.com/lanmaster53/recon-ng" target="_blank">Recon-ng<span class="lbl">Web recon framework with modular design</span></a>
                 <a class="link" href="https://www.virustotal.com/gui/home/search" target="_blank">VirusTotal<span class="lbl">Scan URLs, domains, files &amp; IPs</span></a>
@@ -595,17 +588,6 @@ function filterCards() {
                 <a class="link" href="https://builtwith.com/" target="_blank">BuiltWith<span class="lbl">Website technology profiler</span></a>
             </div>
             <div class="tag-row"><span class="tag mixed">Free/Paid</span><span class="tag cli">CLI</span><span class="tag tool">BugBounty</span></div>
-        </div>
-
-        <div class="card new-card">
-            <h3>☁️ Cloud File Discovery</h3>
-            <p>Indexed cloud &amp; open directory file search engines.</p>
-            <div class="links">
-                <a class="link" href="https://meawfy.com" target="_blank">MEAWFY<span class="lbl">Advanced Mega.nz file search &amp; indexing</span></a>
-                <a class="link" href="https://odcrawler.com" target="_blank">OD Crawler<span class="lbl">Open directory intelligence</span></a>
-                <a class="link" href="https://filepursuit.com/" target="_blank">FilePursuit<span class="lbl">File search across the web</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">File Discovery</span></div>
         </div>
 
     </div>
@@ -618,6 +600,7 @@ function filterCards() {
             <h3>✉️ Email OSINT</h3>
             <p>Email discovery, breach search, account enumeration, reputation checking.</p>
             <div class="links">
+                <a class="link" href="https://leadleap.net/email-validator" target="_blank">LeadLeap Email Validator<span class="lbl">Multi-layer SMTP/DMARC verification</span></a>
                 <a class="link" href="https://hunter.io/" target="_blank">Hunter.io</a>
                 <a class="link" href="https://github.com/megadose/holehe" target="_blank">Holehe</a>
                 <a class="link" href="https://haveibeenpwned.com/" target="_blank">Have I Been Pwned</a>
@@ -643,7 +626,7 @@ function filterCards() {
             <div class="tag-row"><span class="tag mixed">Free/Freemium</span><span class="tag tool">Breach</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>🌑 Dark Web Monitoring</h3>
             <p>Darknet intelligence, credential monitoring, and Tor-indexed sources.</p>
             <div class="links">
@@ -653,16 +636,6 @@ function filterCards() {
                 <a class="link" href="https://github.com/MihaelaTartarea/IVRE" target="_blank">IVRE<span class="lbl">Network recon framework</span></a>
             </div>
             <div class="tag-row"><span class="tag paid">Paid</span><span class="tag tool">Threat Intel</span></div>
-        </div>
-
-        <!-- NEW: LeadLeap Email Validator -->
-        <div class="card new-card">
-            <h3>📧 LeadLeap Email Validator</h3>
-            <p>Free multi-stage email validation tool. No account required for first 5 lookups/day. Performs syntax, DNS, SMTP, MX, SPF, DMARC, disposable and catch-all detection.</p>
-            <div class="links">
-                <a class="link" href="https://leadleap.net/email-validator" target="_blank">LeadLeap Email Validator<span class="lbl">Multi-layer email verification (free tier)</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Email</span></div>
         </div>
 
     </div>
@@ -736,7 +709,7 @@ function filterCards() {
     </div>
 
     <!-- ═══════════════════ SECTION: FILES / METADATA / DORKING ═══════════════════ -->
-    <div class="section-label">📄 Files, Metadata &amp; Dorking</div>
+    <div class="section-label">📄 Files, Metadata &amp; Open Directories</div>
     <div class="grid">
 
         <div class="card">
@@ -769,24 +742,24 @@ function filterCards() {
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Dorking</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>🧠 Search Intelligence</h3>
             <p>AI-powered query builders, advanced search engines, and OSINT browsers.</p>
             <div class="links">
                 <a class="link" href="https://dorkgpt.com" target="_blank">DorkGPT — AI dork generator</a>
                 <a class="link" href="https://dorksearch.com" target="_blank">Dork Search Pro</a>
-                <a class="link" href="https://odcrawler.com" target="_blank">OD Crawler — open directory intel</a>
                 <a class="link" href="https://kagi.com" target="_blank">Kagi Browser<span class="lbl">Privacy-focused search engine</span></a>
-                <a class="link" href="https://ubikron.com" target="_blank">Ubikron<span class="lbl">OSINT resource &amp; tooling hub</span></a>
             </div>
             <div class="tag-row"><span class="tag mixed">Free/Tooling</span><span class="tag tool">Search</span></div>
         </div>
 
-        <!-- NEW: DeDigger - Google Drive public file search -->
         <div class="card new-card">
-            <h3>📁 DeDigger</h3>
-            <p>Search engine for finding public files stored in Google Drive.</p>
+            <h3>☁️ Cloud &amp; Open Directory Discovery</h3>
+            <p>Indexed cloud &amp; open directory file search engines.</p>
             <div class="links">
+                <a class="link" href="https://meawfy.com" target="_blank">MEAWFY<span class="lbl">Advanced Mega.nz file search &amp; indexing</span></a>
+                <a class="link" href="https://odcrawler.com" target="_blank">OD Crawler<span class="lbl">Open directory intelligence</span></a>
+                <a class="link" href="https://filepursuit.com/" target="_blank">FilePursuit<span class="lbl">File search across the web</span></a>
                 <a class="link" href="https://www.dedigger.com" target="_blank">DeDigger<span class="lbl">Find public files in Google Drive</span></a>
             </div>
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">File Discovery</span></div>
@@ -799,24 +772,26 @@ function filterCards() {
     <div class="grid">
 
         <div class="card new-card">
-            <h3>🌍 Global Monitoring</h3>
+            <h3>🌍 Global Monitoring &amp; Conflict Tracking</h3>
             <p>Real-time world maps of conflicts, disasters, political &amp; economic events.</p>
             <div class="links">
                 <a class="link" href="https://monitor-the-situation.com" target="_blank">Monitor The Situation<span class="lbl">Real-time situation awareness map</span></a>
                 <a class="link" href="https://worldwatch.uk" target="_blank">WorldWatch UK<span class="lbl">Geopolitical &amp; security news feeds</span></a>
                 <a class="link" href="https://www.acleddata.com/" target="_blank">ACLED<span class="lbl">Armed Conflict Location &amp; Event Data</span></a>
                 <a class="link" href="https://liveuamap.com/" target="_blank">LiveUAMap<span class="lbl">Live conflict &amp; event mapping</span></a>
+                <a class="link" href="https://war-tracker.com" target="_blank">War-Tracker<span class="lbl">Live conflict map with geolocated events</span></a>
+                <a class="link" href="https://irwatch.org" target="_blank">IRWatch<span class="lbl">Real-time Iran conflict intelligence dashboard</span></a>
             </div>
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Monitoring</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>📡 Satellite &amp; Geospatial Tools</h3>
             <p>Satellite imagery, terrain analysis, and location verification.</p>
             <div class="links">
                 <a class="link" href="https://www.google.com/maps" target="_blank">Google Maps / Street View</a>
                 <a class="link" href="https://www.bing.com/maps" target="_blank">Bing Maps (Birds Eye)</a>
-                <a class="link" href="https://zoom.earth/" target="_blank">Zoom.Earth<span class="lbl">Near real-time satellite imagery</span></a>
+                <a class="link" href="https://zoom.earth/" target="_blank">Zoom.EARTH<span class="lbl">Near real-time satellite imagery</span></a>
                 <a class="link" href="https://livingatlas.arcgis.com/wayback/" target="_blank">ArcGIS Wayback<span class="lbl">Historical satellite imagery comparison</span></a>
                 <a class="link" href="https://overpass-turbo.eu/" target="_blank">Overpass Turbo<span class="lbl">OpenStreetMap advanced queries</span></a>
                 <a class="link" href="https://www.suncalc.org/" target="_blank">SunCalc<span class="lbl">Shadow &amp; sun position for timestamp verification</span></a>
@@ -824,7 +799,7 @@ function filterCards() {
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">GEOINT</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>✈️ Transport &amp; Vessel Tracking</h3>
             <p>Aircraft, ship, and vehicle tracking via ADS-B, AIS, and public data.</p>
             <div class="links">
@@ -836,33 +811,13 @@ function filterCards() {
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Transport</span></div>
         </div>
 
-        <!-- NEW: War-Tracker - live conflict mapping -->
-        <div class="card new-card">
-            <h3>📡 War-Tracker</h3>
-            <p>Video / news aggregator with geolocated events. Real-time conflict mapping and situation awareness.</p>
-            <div class="links">
-                <a class="link" href="https://war-tracker.com" target="_blank">War-Tracker<span class="lbl">Live conflict map with geolocated events</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Conflict Monitoring</span></div>
-        </div>
-
-        <!-- NEW: IRWatch - Iran conflict intelligence dashboard -->
-        <div class="card new-card">
-            <h3>🪖 IRWatch</h3>
-            <p>Free, live OSINT dashboard focused on the Iran conflict (Operation Epic Fury). Aggregates 26+ vetted sources with AI-powered categorization, confidence ratings, and source reliability scoring.</p>
-            <div class="links">
-                <a class="link" href="https://irwatch.org" target="_blank">IRWatch<span class="lbl">Real-time Iran conflict intelligence</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Conflict Monitoring</span></div>
-        </div>
-
     </div>
 
     <!-- ═══════════════════ SECTION: FINANCIAL / CORPORATE ═══════════════════ -->
     <div class="section-label">💰 Financial, Crypto &amp; Corporate Intelligence</div>
     <div class="grid">
 
-        <div class="card new-card">
+        <div class="card">
             <h3>🔗 Blockchain &amp; Crypto Tracing</h3>
             <p>Trace wallet transactions, monitor blockchain activity, link analysis.</p>
             <div class="links">
@@ -879,6 +834,8 @@ function filterCards() {
             <h3>🏢 Corporate &amp; Company Intelligence</h3>
             <p>Company filings, directors, beneficial ownership, SEC &amp; registry data.</p>
             <div class="links">
+                <a class="link" href="https://leadleap.net" target="_blank">LeadLeap Contact Search<span class="lbl">B2B contact discovery &amp; signals</span></a>
+                <a class="link" href="https://leadleap.net/opendata" target="_blank">LeadLeap Open Data<span class="lbl">Aggregated public registry records</span></a>
                 <a class="link" href="https://opencorporates.com/" target="_blank">OpenCorporates<span class="lbl">Largest open company database</span></a>
                 <a class="link" href="https://www.sec.gov/cgi-bin/browse-edgar" target="_blank">SEC EDGAR<span class="lbl">US company filings &amp; disclosures</span></a>
                 <a class="link" href="https://www.companieshouse.gov.uk/" target="_blank">Companies House (UK)</a>
@@ -886,16 +843,6 @@ function filterCards() {
                 <a class="link" href="https://www.northdata.de/" target="_blank">NorthData<span class="lbl">European company data &amp; filings</span></a>
             </div>
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Corporate</span></div>
-        </div>
-
-        <!-- NEW: LeadLeap Open Data Search -->
-        <div class="card new-card">
-            <h3>📊 LeadLeap Open Data Search</h3>
-            <p>Free search across hundreds of public government and registry data sources: SEC EDGAR, SBA loan data, USPTO patents, FDIC bank directory, FAA aircraft registry, FDA device establishments, and international business registries (Australia, Norway, Switzerland), nonprofit filings, federal contract recipients, and more. Cross-referenced through entity index.</p>
-            <div class="links">
-                <a class="link" href="https://leadleap.net/opendata" target="_blank">LeadLeap Open Data<span class="lbl">Aggregated public records (free)</span></a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Public Data</span></div>
         </div>
 
     </div>
@@ -929,7 +876,7 @@ function filterCards() {
             <div class="tag-row"><span class="tag mixed">Partly Free</span><span class="tag tool">India</span></div>
         </div>
 
-        <div class="card new-card">
+        <div class="card">
             <h3>🗂️ Government &amp; Open Data</h3>
             <p>Government portals, FOIA, open datasets, and transparency portals.</p>
             <div class="links">
@@ -940,6 +887,24 @@ function filterCards() {
                 <a class="link" href="https://wikileaks.org/" target="_blank">WikiLeaks</a>
             </div>
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Gov Data</span></div>
+        </div>
+
+    </div>
+
+    <!-- ═══════════════════ SECTION: BUG BOUNTY / SECURITY RESEARCH ═══════════════════ -->
+    <div class="section-label">🛡️ Bug Bounty &amp; Security Research</div>
+    <div class="grid">
+
+        <div class="card new-card">
+            <h3>🐛 Bug Bounty &amp; Exploit Research</h3>
+            <p>Platforms for vulnerability disclosure, exploit databases, and community scam reporting.</p>
+            <div class="links">
+                <a class="link" href="https://bugbountyscam.com/" target="_blank">BugBountyScam<span class="lbl">Expose fraudulent & unfair bug bounty programs</span></a>
+                <a class="link" href="https://www.exploit-db.com/" target="_blank">Exploit-DB<span class="lbl">Public exploits & penetration testing resources</span></a>
+                <a class="link" href="https://nvd.nist.gov/" target="_blank">NVD (National Vulnerability Database)</a>
+                <a class="link" href="https://hackerone.com/directory" target="_blank">HackerOne Directory<span class="lbl">Bug bounty programs & vulnerability disclosure</span></a>
+            </div>
+            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">BugBounty</span></div>
         </div>
 
     </div>
@@ -966,6 +931,7 @@ function filterCards() {
             <h3>🔗 Investigation Frameworks</h3>
             <p>Structured toolkits for blockchain, dorking, geolocation investigations.</p>
             <div class="links">
+                <a class="link" href="https://ubikron.com" target="_blank">Ubikron<span class="lbl">Browser-based OSINT investigation workbench</span></a>
                 <a class="link" href="https://osint.intelligenceonchain.com" target="_blank">IntelligenceOnChain Toolkit</a>
                 <a class="link" href="https://hunchly.com/" target="_blank">Hunchly<span class="lbl">Auto-captures &amp; logs OSINT research sessions</span></a>
                 <a class="link" href="https://www.skopenow.com/" target="_blank">Skopenow<span class="lbl">Automated person/company investigations</span></a>
@@ -994,32 +960,21 @@ function filterCards() {
             <div class="tag-row"><span class="tag free">Free</span><span class="tag cli">GitHub</span></div>
         </div>
 
-        <!-- NEW: OSINT Cabal -->
         <div class="card new-card">
-            <h3>🎭 OSINT Cabal</h3>
-            <p>Free intelligence tools, threat research community, and tip line for reporting suspicious forums or websites.</p>
+            <h3>🎭 Community &amp; Threat Intel</h3>
+            <p>Free intelligence tools, threat research community, and tip lines for suspicious activity.</p>
             <div class="links">
-                <a class="link" href="https://osintcabal.org" target="_blank">OSINT Cabal<span class="lbl">Community-driven OSINT tools &amp; threat intel</span></a>
+                <a class="link" href="https://osintcabal.org" target="_blank">OSINT Cabal<span class="lbl">Counter-extremism research & tip line</span></a>
+                <a class="link" href="https://unishka.substack.com" target="_blank">UNISHKA’s Substack<span class="lbl">Country-specific OSINT toolkits</span></a>
             </div>
             <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Community</span></div>
-        </div>
-
-        <!-- NEW: UNISHKA Substack / OSINT World Series -->
-        <div class="card new-card">
-            <h3>📰 UNISHKA OSINT World Series</h3>
-            <p>Country-specific OSINT toolkits, curated databases, and investigative resources. Free for research.</p>
-            <div class="links">
-                <a class="link" href="https://unishka.substack.com" target="_blank">UNISHKA’s Substack<span class="lbl">Country-specific OSINT toolkits</span></a>
-                <a class="link" href="https://unishka.com/osint-world-series/" target="_blank">OSINT World Series (full collection)</a>
-            </div>
-            <div class="tag-row"><span class="tag free">Free</span><span class="tag tool">Research</span></div>
         </div>
 
     </div>
 
     <footer>
         <p><strong>⚠️ Responsible Use:</strong> These tools are for lab use and authorized security research only. Do not use against systems or individuals you don't have permission to investigate. Always respect privacy laws, GDPR, and ethical guidelines.</p>
-        <p style="margin-top: 10px; color: #3a5468; font-family: 'JetBrains Mono', monospace; font-size: 11px;">Last updated: March 2026 &nbsp;|&nbsp; Made by Aryan Giri &nbsp;|&nbsp; ary.osint</p>
+        <p style="margin-top: 10px; color: #3a5468; font-family: 'JetBrains Mono', monospace; font-size: 11px;">Last updated: July 2026 &nbsp;|&nbsp; Made by Aryan Giri &nbsp;|&nbsp; ary.osint</p>
     </footer>
 
 </div>

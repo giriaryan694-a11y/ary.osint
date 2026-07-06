@@ -1,0 +1,515 @@
+{
+  "meta": {
+    "title": "ary.osint — OSINT Toolbox",
+    "author": "Aryan Giri",
+    "github": "giriaryan694-a11y",
+    "updated": "July 2026",
+    "toolCount": "220+"
+  },
+  "sections": [
+    {
+      "id": "identity",
+      "title": "👤 Identity & Social Intelligence",
+      "categories": [
+        {
+          "title": "👤 Username / Identity",
+          "description": "Search usernames across social sites, profiles, and leaks.",
+          "tags": ["free", "cli", "tool"],
+          "links": [
+            {"name": "Sherlock", "url": "https://github.com/sherlock-project/sherlock", "description": "CLI username search across 400+ sites"},
+            {"name": "WhatsMyName.app", "url": "https://whatsmyname.app", "description": "Web-based username enumeration"},
+            {"name": "UserSearch.ai", "url": "https://usersearch.ai/"},
+            {"name": "UserSearch.org", "url": "https://usersearch.org"},
+            {"name": "Social-Searcher", "url": "https://social-searcher.com/"},
+            {"name": "XCancel (Twitter checks)", "url": "https://xcancel.com/"},
+            {"name": "OSINT-CSE", "url": "https://github.com/paulpogoda/OSINT-CSE"},
+            {"name": "Epieos (OSINT Tool)", "url": "https://epieos.com/"},
+            {"name": "CheckUsernames", "url": "https://checkusernames.com/", "description": "Quickly check username across 160+ social networks"}
+          ]
+        },
+        {
+          "title": "📱 Phone Number Lookup",
+          "description": "Reverse phone lookup, carrier/region info, related leaks.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "Whocalld", "url": "https://whocalld.com", "description": "Crowdsourced phone intel & spam reporting"},
+            {"name": "Numlookup (web)", "url": "https://www.numlookup.com/"},
+            {"name": "Truecaller (web)", "url": "https://www.truecaller.com/"},
+            {"name": "IDCrawl", "url": "https://www.idcrawl.com/"},
+            {"name": "PPL.contact", "url": "https://ppl.contact/"},
+            {"name": "PhoneInfoga", "url": "https://github.com/sundowndev/PhoneInfoga", "description": "Advanced info gathering via phone numbers"},
+            {"name": "TruePeopleSearch", "url": "https://www.truepeoplesearch.com/"},
+            {"name": "CallerSmart", "url": "https://callersmart.com", "description": "Community-based caller ID & spam detection"}
+          ]
+        },
+        {
+          "title": "🔎 People Search & Background Check",
+          "description": "US people search, public records, background checks, address lookup.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "USA.com (US People Search)", "url": "http://www.usa.com/"},
+            {"name": "WhitePages", "url": "https://www.whitepages.com/"},
+            {"name": "PeekYou", "url": "https://www.peekyou.com/"},
+            {"name": "Spokeo", "url": "https://www.spokeo.com/"},
+            {"name": "InfoTracer", "url": "https://www.infotracer.com/"},
+            {"name": "SearchBug", "url": "https://www.searchbug.com/"},
+            {"name": "SocialCatfish", "url": "https://www.socialcatfish.com/"},
+            {"name": "X-Ray Contact", "url": "https://xraycontact.com", "description": "Profile from email/phone/username/image"}
+          ]
+        },
+        {
+          "title": "🕵️ Identity Investigation Platforms",
+          "description": "Full-cycle platforms that map digital identities from multiple data sources.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "Maltego", "url": "https://maltego.com/", "description": "Visual link analysis & relationship mapping"},
+            {"name": "SpiderFoot", "url": "https://spiderfoot.net/", "description": "Automated OSINT across 100+ sources"},
+            {"name": "Lampyre", "url": "https://www.lampyre.io/", "description": "Real-time intelligence from diverse sources"},
+            {"name": "OSINT Industries", "url": "https://osint.industries", "description": "Multi-source identity profiling"},
+            {"name": "IRBIS Pro OSINT Profiler", "url": "https://irbis.espysys.com/", "description": "Dark web + social media profiling"},
+            {"name": "DeHashed", "url": "https://dehashed.com/", "description": "Billion-record breach search engine"}
+          ]
+        },
+        {
+          "title": "📸 Instagram SOCMINT",
+          "description": "Bookmarklet & tools to reveal dates, timestamps, and metadata for Instagram.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "Instagram Date Reveal Bookmarklet", "url": "https://tools.myosint.training"},
+            {"name": "Details & instructions", "url": "https://blog.myosint.training"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "network",
+      "title": "🌐 Network, IP & Domain Intelligence",
+      "categories": [
+        {
+          "title": "🌐 IP / Host Lookup",
+          "description": "IP reputation, ASN, geolocation, exposed services, vulnerability data, whois lookup.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "Shodan", "url": "https://www.shodan.io/", "description": "Search engine for internet-connected devices"},
+            {"name": "CVE DB Shodan", "url": "https://cvedb.shodan.io"},
+            {"name": "InternetDB Shodan", "url": "https://internetdb.shodan.io"},
+            {"name": "Censys", "url": "https://censys.io/", "description": "Internet intelligence & attack surface mgmt"},
+            {"name": "CriminalIP", "url": "https://www.criminalip.io/"},
+            {"name": "LeakIX", "url": "https://leakix.net/"},
+            {"name": "AbuseIPDB", "url": "https://www.abuseipdb.com/"},
+            {"name": "FOFA (IP & Host Search)", "url": "https://en.fofa.info/"},
+            {"name": "YouGetSignal (Network Tools)", "url": "https://www.yougetsignal.com/"},
+            {"name": "IPLocation.io", "url": "https://iplocation.io/"},
+            {"name": "IPinfo.io (IP Geolocation)", "url": "https://ipinfo.io/"},
+            {"name": "MaxMind GeoIP", "url": "https://www.maxmind.com/"},
+            {"name": "ARIN (North America IP Registry)", "url": "https://www.arin.net/"},
+            {"name": "IPQualityScore", "url": "https://www.ipqualityscore.com/ip-reputation-check"},
+            {"name": "Spamhaus Reputation", "url": "https://check.spamhaus.org/"},
+            {"name": "WhatIsMyIPAddress", "url": "https://whatismyipaddress.com/"},
+            {"name": "2IP.io Abuse", "url": "https://2ip.io/abuse/"},
+            {"name": "URLScan.io", "url": "https://urlscan.io/", "description": "Safely sandbox & inspect suspicious URLs"}
+          ]
+        },
+        {
+          "title": "🔗 Domain / DNS",
+          "description": "Whois, passive DNS, subdomain discovery, historical content, reverse DNS.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "who.is (whois)", "url": "https://who.is"},
+            {"name": "ICANN WHOIS", "url": "https://lookup.icann.org/en"},
+            {"name": "WHOIS.com", "url": "https://www.whois.com/whois/"},
+            {"name": "MXToolbox WHOIS", "url": "https://mxtoolbox.com/whois.aspx"},
+            {"name": "Netcraft Site Report", "url": "https://sitereport.netcraft.com/"},
+            {"name": "Netcraft Search DNS", "url": "https://searchdns.netcraft.com/"},
+            {"name": "DomainHunter.pro", "url": "https://domainhunter.pro/"},
+            {"name": "Amass (subdomain)", "url": "https://github.com/OWASP/Amass"},
+            {"name": "Wayback Machine", "url": "https://archive.org/web/"},
+            {"name": "PageCached", "url": "https://pagecached.com/"},
+            {"name": "DNSlytics", "url": "https://dnslytics.com/"},
+            {"name": "NSLookup.io", "url": "https://www.nslookup.io/"},
+            {"name": "HackerTarget Reverse IP", "url": "https://hackertarget.com/reverse-ip-lookup/"},
+            {"name": "ViewDNS Reverse IP", "url": "https://viewdns.info/reverseip/"},
+            {"name": "DNSChecker Reverse", "url": "https://dnschecker.org/reverse-dns.php"},
+            {"name": "ip.thc.org (rDNS, Subdomain, CNAME)", "url": "https://ip.thc.org/"},
+            {"name": "DNSDumpster", "url": "https://dnsdumpster.com/", "description": "Domain recon & DNS mapping"}
+          ]
+        },
+        {
+          "title": "🌐 Recon & Vulnerability Intelligence",
+          "description": "Subdomain discovery, CVE scanning, JS analysis and exploit sandboxing.",
+          "tags": ["mixed", "cli", "tool"],
+          "links": [
+            {"name": "TrinetLayer", "url": "https://trinetlayer.com", "description": "Attack surface suite (GhostJS secret scanning)"},
+            {"name": "theHarvester", "url": "https://github.com/laramies/theHarvester", "description": "Emails, subdomains & IPs from public sources"},
+            {"name": "Recon-ng", "url": "https://github.com/lanmaster53/recon-ng", "description": "Web recon framework with modular design"},
+            {"name": "VirusTotal", "url": "https://www.virustotal.com/gui/home/search", "description": "Scan URLs, domains, files & IPs"},
+            {"name": "Wappalyzer", "url": "https://www.wappalyzer.com/", "description": "Technology fingerprinting"},
+            {"name": "BuiltWith", "url": "https://builtwith.com/", "description": "Website technology profiler"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "email",
+      "title": "✉️ Email, Breach & Data Leaks",
+      "categories": [
+        {
+          "title": "✉️ Email OSINT",
+          "description": "Email discovery, breach search, account enumeration, reputation checking.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "LeadLeap Email Validator", "url": "https://leadleap.net/email-validator", "description": "Multi-layer SMTP/DMARC verification"},
+            {"name": "Hunter.io", "url": "https://hunter.io/"},
+            {"name": "Holehe", "url": "https://github.com/megadose/holehe"},
+            {"name": "Have I Been Pwned", "url": "https://haveibeenpwned.com/"},
+            {"name": "Breach Directory", "url": "https://breach.directory/"},
+            {"name": "EmailRep.io", "url": "https://emailrep.io/"},
+            {"name": "APIVoid Email Check", "url": "https://www.apivoid.com/tools/email-reputation-check/"},
+            {"name": "Greip Email Scoring", "url": "https://greip.io/tools/Email-Scoring"},
+            {"name": "XposedOrNot", "url": "https://xposedornot.com/", "description": "Free & privacy-focused breach check"}
+          ]
+        },
+        {
+          "title": "🧨 Data Leak Intelligence",
+          "description": "Curated leak search, breach snapshots, and specialized leak platforms.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "OSINT Leak Search", "url": "https://osint.link/#leak"},
+            {"name": "Intelligence Security", "url": "https://www.intelligencesecurity.io", "description": "Breach & domain insights"},
+            {"name": "OSINT Industries", "url": "https://www.osint.industries"},
+            {"name": "DeHashed", "url": "https://dehashed.com/", "description": "Billions of leaked records searchable"},
+            {"name": "Intelligence X", "url": "https://intelx.io/", "description": "Dark web & breach archive search"}
+          ]
+        },
+        {
+          "title": "🌑 Dark Web Monitoring",
+          "description": "Darknet intelligence, credential monitoring, and Tor-indexed sources.",
+          "tags": ["paid", "tool"],
+          "links": [
+            {"name": "DarkOwl", "url": "https://www.darkowl.com/", "description": "Indexes Tor, I2P, IRC & hacking forums"},
+            {"name": "Intelligence X", "url": "https://intelx.io/"},
+            {"name": "Recorded Future", "url": "https://www.recordedfuture.com/", "description": "AI-powered threat intel & dark web feeds"},
+            {"name": "IVRE", "url": "https://github.com/MihaelaTartarea/IVRE", "description": "Network recon framework"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "media",
+      "title": "🖼️ Media, Image & Video Intelligence",
+      "categories": [
+        {
+          "title": "🖼️ Image & Video OSINT",
+          "description": "Reverse search, frame analysis, verification, visual origin detection.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "Google Images", "url": "https://images.google.com/"},
+            {"name": "TinEye (Reverse Image)", "url": "https://tineye.com/"},
+            {"name": "InVID / WeVerify", "url": "https://www.invid-project.eu/tools-and-support/"},
+            {"name": "Lenso.ai", "url": "https://lenso.ai/en"},
+            {"name": "Reversely.ai", "url": "https://www.reversely.ai/"},
+            {"name": "ImageWhisperer", "url": "https://imagewhisperer.org/"},
+            {"name": "WhenTaken (timestamps)", "url": "https://whentaken.com/"},
+            {"name": "Visual Origins Detector", "url": "https://visualorigins.digitaldigging.org"},
+            {"name": "WhereIsThisPhoto", "url": "https://www.whereisthisphoto.com/"},
+            {"name": "AI Reverse Image Search", "url": "https://copychecker.com/ai-reverse-image-search"},
+            {"name": "VideoSearch.io", "url": "https://videosearch.io", "description": "Multi-platform video discovery"}
+          ]
+        },
+        {
+          "title": "🤖 Face Recognition & Geolocation",
+          "description": "Face search, AI geolocation, and photo timestamp estimation.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "PimEyes", "url": "https://pimeyes.com/en", "description": "Face recognition search engine"},
+            {"name": "FaceCheck.id (Face Search)", "url": "https://facecheck.id/"},
+            {"name": "GeoVLM (AI Geolocation)", "url": "https://huggingface.co/spaces/AceXRoux/GeoVLM"},
+            {"name": "PlaceSpotter", "url": "https://placespotter.com", "description": "AI photo geolocation — 3 free/month"},
+            {"name": "Lost Media Wiki", "url": "https://lostmediawiki.com"}
+          ]
+        },
+        {
+          "title": "🎭 Deepfake Detector",
+          "description": "Detect AI-generated deepfakes and synthetic media.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "NVIDIA Synthetic Video Detector NIM", "url": "https://build.nvidia.com/nvidia/synthetic-video-detector"},
+            {"name": "Deepware Scanner", "url": "https://scanner.deepware.ai/"},
+            {"name": "Sensity AI", "url": "https://sensity.ai/"},
+            {"name": "Reality Defender", "url": "https://www.realitydefender.com/"},
+            {"name": "Google SynthID", "url": "https://deepmind.google/science/synthid/"},
+            {"name": "Hive Moderation", "url": "https://www.hivemoderation.com/deepfake-detection", "description": "API-based deepfake & AI content detection"},
+            {"name": "kimi2.6 (deepfake detection)", "url": "https://build.nvidia.com/moonshotai/kimi-k2.6", "description": "Can also detect deepfake but not much powerful"},
+            {"name": "Vastav Deepfake Detector", "url": "https://vastav.ekoahamdutivnasti.com/"}
+          ]
+        },
+        {
+          "title": "🔬 Media Forensics",
+          "description": "Verify authenticity and detect tampering in images/videos.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "Forensically", "url": "https://29a.ch/photo-forensics/"},
+            {"name": "FotoForensics", "url": "https://fotoforensics.com/"},
+            {"name": "Fake Image Detector", "url": "https://www.fakeimagedetector.com/"},
+            {"name": "Amber Video", "url": "https://ambervideo.co/"},
+            {"name": "Truepic", "url": "https://www.truepic.com/"},
+            {"name": "Serelay", "url": "https://serelay.com/"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "files",
+      "title": "📄 Files, Metadata & Open Directories",
+      "categories": [
+        {
+          "title": "📄 Metadata & Files",
+          "description": "Extract EXIF, document metadata, embedded paths, file analysis.",
+          "tags": ["free", "cli"],
+          "links": [
+            {"name": "MetaLyzer", "url": "https://giriaryan694-a11y.github.io/MetaLyzer/", "description": "Client-side EXIF/XMP/IPTC extractor"},
+            {"name": "ExifTool", "url": "https://exiftool.org/"},
+            {"name": "Metagoofil", "url": "https://github.com/laramies/metagoofil"},
+            {"name": "FilePhish", "url": "https://greylensresearch.github.io/filephish/"},
+            {"name": "FileSec", "url": "https://filesec.io/"}
+          ]
+        },
+        {
+          "title": "🔍 Google Dorking & Research",
+          "description": "Advanced search techniques, exposed data discovery, dork generators.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "DorkIQ (Dork Generator)", "url": "https://dorkiq.triada.in/"},
+            {"name": "DorkGPT", "url": "https://dorkgpt.com", "description": "AI-powered dork generator"},
+            {"name": "Dork Search Pro", "url": "https://dorksearch.com", "description": "Advanced dork search interface"},
+            {"name": "Dorks collections (cyb_detective)", "url": "https://gitlab.com/cyb_detective/Dorks-collections-list"},
+            {"name": "Advanced search operators list", "url": "https://gitlab.com/cyb_detective/Advanced-search-operators-list"},
+            {"name": "Dorks (xen00rw)", "url": "https://dorks.xen00rw.me/"},
+            {"name": "Awesome search queries (ProjectDiscovery)", "url": "https://github.com/projectdiscovery/awesome-search-queries"},
+            {"name": "📰 Article: Exposed Obsidian Vaults", "url": "https://hackers-arise.com/google-dorking-discovering-exposed-obsidian-vaults/"},
+            {"name": "📰 Finding Surveillance Cameras", "url": "https://hackers-arise.com/osint-finding-surveillance-cameras-with-overpass-turbo/"}
+          ]
+        },
+        {
+          "title": "🧠 Search Intelligence",
+          "description": "AI-powered query builders, advanced search engines, and OSINT browsers.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "DorkGPT — AI dork generator", "url": "https://dorkgpt.com"},
+            {"name": "Dork Search Pro", "url": "https://dorksearch.com"},
+            {"name": "Kagi Browser", "url": "https://kagi.com", "description": "Privacy-focused search engine"}
+          ]
+        },
+        {
+          "title": "☁️ Cloud & Open Directory Discovery",
+          "description": "Indexed cloud & open directory file search engines.",
+          "tags": ["free", "tool"],
+          "new": true,
+          "links": [
+            {"name": "MEAWFY", "url": "https://meawfy.com", "description": "Advanced Mega.nz file search & indexing"},
+            {"name": "OD Crawler", "url": "https://odcrawler.com", "description": "Open directory intelligence"},
+            {"name": "FilePursuit", "url": "https://filepursuit.com/", "description": "File search across the web"},
+            {"name": "DeDigger", "url": "https://www.dedigger.com", "description": "Find public files in Google Drive"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "geo",
+      "title": "🗺️ Geospatial, Maps & Global Monitoring",
+      "categories": [
+        {
+          "title": "🌍 Global Monitoring & Conflict Tracking",
+          "description": "Real-time world maps of conflicts, disasters, political & economic events.",
+          "tags": ["free", "tool"],
+          "new": true,
+          "links": [
+            {"name": "Monitor The Situation", "url": "https://monitor-the-situation.com", "description": "Real-time situation awareness map"},
+            {"name": "WorldWatch UK", "url": "https://worldwatch.uk", "description": "Geopolitical & security news feeds"},
+            {"name": "ACLED", "url": "https://www.acleddata.com/", "description": "Armed Conflict Location & Event Data"},
+            {"name": "LiveUAMap", "url": "https://liveuamap.com/", "description": "Live conflict & event mapping"},
+            {"name": "War-Tracker", "url": "https://war-tracker.com", "description": "Live conflict map with geolocated events"},
+            {"name": "IRWatch", "url": "https://irwatch.org", "description": "Real-time Iran conflict intelligence dashboard"}
+          ]
+        },
+        {
+          "title": "📡 Satellite & Geospatial Tools",
+          "description": "Satellite imagery, terrain analysis, and location verification.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "Google Maps / Street View", "url": "https://www.google.com/maps"},
+            {"name": "Bing Maps (Birds Eye)", "url": "https://www.bing.com/maps"},
+            {"name": "Zoom.EARTH", "url": "https://zoom.earth/", "description": "Near real-time satellite imagery"},
+            {"name": "ArcGIS Wayback", "url": "https://livingatlas.arcgis.com/wayback/", "description": "Historical satellite imagery comparison"},
+            {"name": "Overpass Turbo", "url": "https://overpass-turbo.eu/", "description": "OpenStreetMap advanced queries"},
+            {"name": "SunCalc", "url": "https://www.suncalc.org/", "description": "Shadow & sun position for timestamp verification"}
+          ]
+        },
+        {
+          "title": "✈️ Transport & Vessel Tracking",
+          "description": "Aircraft, ship, and vehicle tracking via ADS-B, AIS, and public data.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "Flightradar24", "url": "https://www.flightradar24.com/", "description": "Real-time aircraft tracking"},
+            {"name": "ADS-B Exchange", "url": "https://adsbexchange.com/", "description": "Unfiltered aircraft tracking"},
+            {"name": "MarineTraffic", "url": "https://www.marinetraffic.com/", "description": "Real-time vessel tracking"},
+            {"name": "VesselFinder", "url": "https://www.vesselfinder.com/"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "financial",
+      "title": "💰 Financial, Crypto & Corporate Intelligence",
+      "categories": [
+        {
+          "title": "🔗 Blockchain & Crypto Tracing",
+          "description": "Trace wallet transactions, monitor blockchain activity, link analysis.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "Blockchain Explorer (BTC)", "url": "https://www.blockchain.com/explorer"},
+            {"name": "Etherscan", "url": "https://etherscan.io/", "description": "Ethereum blockchain explorer"},
+            {"name": "Breadcrumbs", "url": "https://www.breadcrumbs.app/", "description": "Free crypto wallet tracing & graph tool"},
+            {"name": "IntelligenceOnChain Toolkit", "url": "https://osint.intelligenceonchain.com", "description": "OSINT + blockchain investigation"},
+            {"name": "Chainalysis (Reactor)", "url": "https://www.chainalysis.com/", "description": "Professional-grade crypto forensics"}
+          ]
+        },
+        {
+          "title": "🏢 Corporate & Company Intelligence",
+          "description": "Company filings, directors, beneficial ownership, SEC & registry data.",
+          "tags": ["free", "tool"],
+          "new": true,
+          "links": [
+            {"name": "LeadLeap Contact Search", "url": "https://leadleap.net", "description": "B2B contact discovery & signals"},
+            {"name": "LeadLeap Open Data", "url": "https://leadleap.net/opendata", "description": "Aggregated public registry records"},
+            {"name": "OpenCorporates", "url": "https://opencorporates.com/", "description": "Largest open company database"},
+            {"name": "SEC EDGAR", "url": "https://www.sec.gov/cgi-bin/browse-edgar", "description": "US company filings & disclosures"},
+            {"name": "Companies House (UK)", "url": "https://www.companieshouse.gov.uk/"},
+            {"name": "ICIJ Offshore Leaks DB", "url": "https://offshoreleaks.icij.org/", "description": "Panama Papers, Pandora Papers data"},
+            {"name": "NorthData", "url": "https://www.northdata.de/", "description": "European company data & filings"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "records",
+      "title": "🧾 Public Records, Archives & Legal",
+      "categories": [
+        {
+          "title": "🧾 Public Records & Archives",
+          "description": "Historical newspapers, court records, public databases.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "Newspapers.com", "url": "https://www.newspapers.com", "description": "Historical newspaper archives"},
+            {"name": "Judy Records", "url": "https://www.judyrecords.com", "description": "US public court records"},
+            {"name": "PACER", "url": "https://www.pacer.gov/", "description": "US Federal court records"},
+            {"name": "Library of Congress Newspapers", "url": "https://chroniclingamerica.loc.gov/"},
+            {"name": "FamilySearch", "url": "https://www.familysearch.org/", "description": "Genealogy & historical records"}
+          ]
+        },
+        {
+          "title": "🇮🇳 India Records & Legal Search",
+          "description": "Indian court search, citation search, nominal record lookup.",
+          "tags": ["mixed", "tool"],
+          "links": [
+            {"name": "All India Reporter Online", "url": "https://aironline.in"},
+            {"name": "eCourts India", "url": "https://ecourts.gov.in/", "description": "District & high court case search"},
+            {"name": "Indian Kanoon", "url": "https://indiankanoon.org/", "description": "Free Indian legal case database"},
+            {"name": "MCA India", "url": "https://www.mca.gov.in/", "description": "Ministry of Corporate Affairs filings"}
+          ]
+        },
+        {
+          "title": "🗂️ Government & Open Data",
+          "description": "Government portals, FOIA, open datasets, and transparency portals.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "Data.gov (US Open Data)", "url": "https://data.gov/"},
+            {"name": "Data.gov.uk", "url": "https://www.data.gov.uk/"},
+            {"name": "MuckRock", "url": "https://muckrock.com/", "description": "FOIA request tracking & document library"},
+            {"name": "DocumentCloud", "url": "https://www.documentcloud.org/", "description": "Journalist-curated document repository"},
+            {"name": "WikiLeaks", "url": "https://wikileaks.org/"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bugbounty",
+      "title": "🛡️ Bug Bounty & Security Research",
+      "categories": [
+        {
+          "title": "🐛 Bug Bounty & Exploit Research",
+          "description": "Platforms for vulnerability disclosure, exploit databases, and community scam reporting.",
+          "tags": ["free", "tool"],
+          "new": true,
+          "links": [
+            {"name": "BugBountyScam", "url": "https://bugbountyscam.com/", "description": "Expose fraudulent & unfair bug bounty programs"},
+            {"name": "Exploit-DB", "url": "https://www.exploit-db.com/", "description": "Public exploits & penetration testing resources"},
+            {"name": "NVD (National Vulnerability Database)", "url": "https://nvd.nist.gov/"},
+            {"name": "HackerOne Directory", "url": "https://hackerone.com/directory", "description": "Bug bounty programs & vulnerability disclosure"}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "frameworks",
+      "title": "🧰 Frameworks, Directories & Collections",
+      "categories": [
+        {
+          "title": "🧰 OSINT Directories",
+          "description": "Curated tool directories, tags, reviews and country-specific resources.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "OSINTTools.io", "url": "https://osinttools.io"},
+            {"name": "OSINT-for-Countries Map", "url": "https://map.wddadk.com"},
+            {"name": "OSINT Framework", "url": "https://osintframework.com/", "description": "Structured free-tool directory"},
+            {"name": "Start.me OSINT International", "url": "https://start.me/p/7kDabv/osint-international"},
+            {"name": "Start.me 07 World", "url": "https://start.me/p/lLaoXv/07-world"},
+            {"name": "PikaOSINT", "url": "https://pikaosint.pages.dev/"}
+          ]
+        },
+        {
+          "title": "🔗 Investigation Frameworks",
+          "description": "Structured toolkits for blockchain, dorking, geolocation investigations.",
+          "tags": ["free", "tool"],
+          "links": [
+            {"name": "Ubikron", "url": "https://ubikron.com", "description": "Browser-based OSINT investigation workbench"},
+            {"name": "IntelligenceOnChain Toolkit", "url": "https://osint.intelligenceonchain.com"},
+            {"name": "Hunchly", "url": "https://hunchly.com/", "description": "Auto-captures & logs OSINT research sessions"},
+            {"name": "Skopenow", "url": "https://www.skopenow.com/", "description": "Automated person/company investigations"},
+            {"name": "Intel Owl", "url": "https://github.com/intelowlproject/IntelOwl", "description": "Open-source threat intel aggregator"}
+          ]
+        },
+        {
+          "title": "📚 Awesome Collections & Research",
+          "description": "Community curated lists, specialized toolboxes, and comprehensive OSINT resources.",
+          "tags": ["free", "cli"],
+          "wide": true,
+          "links": [
+            {"name": "Awesome AI-OSINT (ubikron)", "url": "https://github.com/ubikron/Awesome-AI-OSINT"},
+            {"name": "OSINT-Kit (Buddhsen-tripathi)", "url": "https://github.com/Buddhsen-tripathi/OSINT-Kit"},
+            {"name": "Advanced-Enrichments (ubikron)", "url": "https://github.com/ubikron/Advanced-Enrichments"},
+            {"name": "OSINT Tools — North Korea", "url": "https://github.com/paulpogoda/OSINT-Tools-North-Korea"},
+            {"name": "OSINT for Countries", "url": "https://github.com/wddadk/OSINT-for-countries"},
+            {"name": "OSINT for Countries V2.0", "url": "https://github.com/paulpogoda/OSINT-for-countries-V2.0"},
+            {"name": "OSINT HUB FR", "url": "https://github.com/Anadema/OSINT-HUB-FR"},
+            {"name": "Awesome SOC Analyst", "url": "https://github.com/LetsDefend/awesome-soc-analyst"},
+            {"name": "Awesome Cybersecurity Datasets", "url": "https://github.com/shramos/Awesome-Cybersecurity-Datasets"},
+            {"name": "Threat Research with Obsidian", "url": "https://github.com/malleVF/Threat-Research-with-Obsidian-for-SOC-Analysts"},
+            {"name": "The Pika's OSINT Toolbox", "url": "https://github.com/passthesh3ll/The-Pika-s-OSINT-ToolBox"},
+            {"name": "Unishka OSINT World Series", "url": "https://unishka.com/osint-world-series/"}
+          ]
+        },
+        {
+          "title": "🎭 Community & Threat Intel",
+          "description": "Free intelligence tools, threat research community, and tip lines for suspicious activity.",
+          "tags": ["free", "tool"],
+          "new": true,
+          "links": [
+            {"name": "OSINT Cabal", "url": "https://osintcabal.org", "description": "Counter-extremism research & tip line"},
+            {"name": "UNISHKA's Substack", "url": "https://unishka.substack.com", "description": "Country-specific OSINT toolkits"}
+          ]
+        }
+      ]
+    }
+  ]
+}
